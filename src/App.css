@@ -5,10 +5,9 @@
 .app {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
+  background: transparent;   /* ✅ IMPORTANT */
 }
 
-/* Remove any default spacing */
 /* GLOBAL WEBSITE BACKGROUND */
 
 body {
@@ -19,7 +18,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 
-  /* Makes background fixed while scrolling */
+  /* Fixed background while scrolling */
   background-attachment: fixed;
 
   font-family: sans-serif;

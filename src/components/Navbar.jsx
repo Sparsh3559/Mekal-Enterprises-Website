@@ -1,221 +1,92 @@
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-
-  // Lock scroll when menu open
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "auto";
-  }, [open]);
-
   return (
-    <>
-      {/* NAVBAR */}
-      <nav className="nav">
-        {/* Mobile hamburger */}
-        <button className="hamburger" onClick={() => setOpen(true)}>
-          ☰
-        </button>
+    <nav className="navbar">
 
-        {/* Logo */}
-        <div className="logo">PrintCraft</div>
+      {/* LOGO */}
+      <div className="logo">PRINT HUB</div>
 
-        {/* Desktop menu */}
-        <div className="menu">
-          <span>CATEGORIES</span>
-          <span>CATALOGUE</span>
-          <span>STORY</span>
-          <span>BLOG</span>
-          <span>CONTACT</span>
-        </div>
+      {/* MENU */}
+      <ul className="nav-links">
 
-        {/* Search + Icons */}
-        <div className="right">
-          <input
-            className="search"
-            placeholder="Search for products"
-          />
+        {/* APPAREL */}
+        <li className="menu-item">
+          Apparel
 
-          <div className="icons">
-            <span>👤</span>
-            <span>❤️</span>
-            <span>🛍️</span>
+          <div className="mega-menu">
+            <div className="mega-column">
+              <h4>T-Shirts</h4>
+              <Link to="/tshirt-printing">Round Neck T-Shirts</Link>
+              <Link to="/tshirt-printing">Polo T-Shirts</Link>
+              <Link to="/tshirt-printing">Oversized T-Shirts</Link>
+            </div>
+
+            <div className="mega-column">
+              <h4>Hoodies</h4>
+              <Link to="/corporate-printing">Zipper Hoodies</Link>
+              <Link to="/corporate-printing">Pullover Hoodies</Link>
+            </div>
+
+            <div className="mega-column">
+              <h4>Corporate Wear</h4>
+              <Link to="/corporate-printing">Uniforms</Link>
+              <Link to="/corporate-printing">Event Apparel</Link>
+            </div>
           </div>
-        </div>
-      </nav>
+        </li>
 
-      {/* Overlay */}
-      {open && (
-        <div className="overlay" onClick={() => setOpen(false)} />
-      )}
+        {/* DRINKWARE */}
+        <li className="menu-item">
+          Drinkware
 
-      {/* Mobile Drawer */}
-      <aside className={`drawer ${open ? "open" : ""}`}>
-        <button className="close" onClick={() => setOpen(false)}>
-          ✕
-        </button>
+          <div className="mega-menu">
+            <div className="mega-column">
+              <h4>Mugs</h4>
+              <Link to="/mug-printing">Ceramic Mugs</Link>
+              <Link to="/mug-printing">Magic Mugs</Link>
+              <Link to="/mug-printing">Travel Mugs</Link>
+            </div>
 
-        <input
-          className="drawer-search"
-          placeholder="Search for products"
-        />
+            <div className="mega-column">
+              <h4>Bottles</h4>
+              <Link to="/banner-printing">Steel Bottles</Link>
+              <Link to="/banner-printing">Glass Bottles</Link>
+            </div>
 
-        <div className="drawer-item">CATEGORIES</div>
-        <div className="drawer-item">CATALOGUE</div>
-        <div className="drawer-item">STORY</div>
-        <div className="drawer-item">BLOG</div>
-        <div className="drawer-item">CONTACT</div>
-        <div className="drawer-item">LOGIN / REGISTER</div>
-      </aside>
+            <div className="mega-column">
+              <h4>Tumblers</h4>
+              <Link to="/banner-printing">Insulated Tumblers</Link>
+            </div>
+          </div>
+        </li>
 
-      {/* STYLES */}
-      <style>{`
+        {/* MARKETING */}
+        <li className="menu-item">
+          Marketing
 
-        /* NAVBAR */
-        .nav {
-          position: sticky;
-          top: 0;
-          height: 70px;
-          background: #e8f2ed;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 20px;
-          z-index: 1001;
-          border-bottom: 1px solid #ddd;
-          gap: 20px;
-        }
+          <div className="mega-menu">
+            <div className="mega-column">
+              <h4>Banners</h4>
+              <Link to="/banner-printing">Flex Banners</Link>
+              <Link to="/banner-printing">Vinyl Banners</Link>
+            </div>
 
-        .logo {
-          font-weight: 700;
-          font-size: 20px;
-          color: #222;
-          white-space: nowrap;
-        }
+            <div className="mega-column">
+              <h4>Posters</h4>
+              <Link to="/banner-printing">Indoor Posters</Link>
+              <Link to="/banner-printing">Outdoor Posters</Link>
+            </div>
 
-        /* Desktop menu */
-        .menu {
-          display: none;
-          gap: 24px;
-          font-weight: 500;
-          color: #333;
-        }
+            <div className="mega-column">
+              <h4>Corporate Kits</h4>
+              <Link to="/corporate-printing">Branding Materials</Link>
+            </div>
+          </div>
+        </li>
 
-        .menu span {
-          cursor: pointer;
-        }
-
-        .menu span:hover {
-          color: #000;
-        }
-
-        /* Right side */
-        .right {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .search {
-          display: none;
-          padding: 8px 14px;
-          border-radius: 20px;
-          border: 1px solid #ccc;
-          outline: none;
-        }
-
-        .icons span {
-          margin-left: 6px;
-          font-size: 18px;
-          cursor: pointer;
-        }
-
-        /* Hamburger */
-        .hamburger {
-          font-size: 22px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          color: black;
-        }
-
-        /* Overlay */
-        .overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,0.45);
-          z-index: 1000;
-        }
-
-        /* Drawer */
-        .drawer {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 85%;
-          max-width: 320px;
-          height: 100%;
-          background: white;
-          padding: 20px 16px;
-          transform: translateX(-100%);
-          transition: transform 0.3s ease;
-          z-index: 1001;
-          overflow-y: auto;
-          box-shadow: 2px 0 12px rgba(0,0,0,0.2);
-        }
-
-        .drawer.open {
-          transform: translateX(0);
-        }
-
-        .close {
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          background: none;
-          border: none;
-          font-size: 22px;
-          cursor: pointer;
-        }
-
-        .drawer-search {
-          width: 100%;
-          box-sizing: border-box;
-          padding: 12px 16px;
-          border-radius: 24px;
-          border: 1px solid #ddd;
-          margin: 48px 0 20px 0;
-          background: #f5f5f5;
-          outline: none;
-        }
-
-        .drawer-item {
-          padding: 16px 8px;
-          border-bottom: 1px solid #eee;
-          font-weight: 500;
-          cursor: pointer;
-        }
-
-        /* ================= DESKTOP VIEW ================= */
-
-        @media (min-width: 768px) {
-
-          .hamburger {
-            display: none;
-          }
-
-          .menu {
-            display: flex;
-          }
-
-          .search {
-            display: block;
-            width: 260px;
-          }
-
-        }
-
-      `}</style>
-    </>
+      </ul>
+    </nav>
   );
 }

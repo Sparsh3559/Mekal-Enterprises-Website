@@ -1,119 +1,189 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <nav className="navbar">
+    <header className="header">
 
-      {/* LOGO */}
-      <div className="logo">PRINT HUB</div>
+      {/* ===== TOP BAR ===== */}
+      <div className="topbar">
 
-      {/* MAIN MENU */}
-      <ul className="menu">
+        <div className="logo">PRINT HUB</div>
 
-        {/* ===== APPAREL ===== */}
-        <li className="menu-item">
+        <input
+          className="search"
+          placeholder="Search products, services..."
+        />
+
+        <div className="actions">
+          <button className="support">Support</button>
+          <button className="login">Login</button>
+
+          {/* MOBILE HAMBURGER */}
+          <button
+            className="hamburger"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+
+      {/* ===== CATEGORY BAR ===== */}
+      <nav className="category-bar">
+
+        <div className="category">
           Apparel
-
-          <div className="mega-menu">
-            <div className="mega-container">
-
-              <div className="mega-column">
+          <div className="mega">
+            <div className="mega-inner">
+              <div>
                 <h4>T-Shirts</h4>
-                <Link to="/tshirt-printing">Round Neck T-Shirts</Link>
-                <Link to="/tshirt-printing">Polo T-Shirts</Link>
-                <Link to="/tshirt-printing">Oversized T-Shirts</Link>
+                <Link to="/tshirt-printing">Round Neck</Link>
+                <Link to="/tshirt-printing">Polo</Link>
+                <Link to="/tshirt-printing">Oversized</Link>
               </div>
-
-              <div className="mega-column">
+              <div>
                 <h4>Corporate Wear</h4>
-                <Link to="/tshirt-printing">Uniform Printing</Link>
+                <Link to="/tshirt-printing">Uniform</Link>
                 <Link to="/tshirt-printing">Event Apparel</Link>
-                <Link to="/tshirt-printing">Team Jerseys</Link>
               </div>
-
             </div>
           </div>
-        </li>
+        </div>
 
-        {/* ===== DRINKWARE ===== */}
-        <li className="menu-item">
+        <div className="category">
           Drinkware
-
-          <div className="mega-menu">
-            <div className="mega-container">
-
-              <div className="mega-column">
+          <div className="mega">
+            <div className="mega-inner">
+              <div>
                 <h4>Mugs</h4>
-                <Link to="/mug-printing">Ceramic Mugs</Link>
-                <Link to="/mug-printing">Magic Mugs</Link>
-                <Link to="/mug-printing">Photo Mugs</Link>
+                <Link to="/mug-printing">Ceramic</Link>
+                <Link to="/mug-printing">Magic Mug</Link>
+                <Link to="/mug-printing">Photo Mug</Link>
               </div>
-
-              <div className="mega-column">
+              <div>
                 <h4>Bottles</h4>
                 <Link to="/mug-printing">Steel Bottles</Link>
                 <Link to="/mug-printing">Sipper Bottles</Link>
-                <Link to="/mug-printing">Glass Bottles</Link>
               </div>
-
             </div>
           </div>
-        </li>
+        </div>
 
-        {/* ===== MARKETING ===== */}
-        <li className="menu-item">
+        <div className="category">
           Marketing
-
-          <div className="mega-menu">
-            <div className="mega-container">
-
-              <div className="mega-column">
-                <h4>Posters & Banners</h4>
-                <Link to="/banner-printing">Vinyl Banners</Link>
-                <Link to="/banner-printing">Flex Printing</Link>
-                <Link to="/banner-printing">Large Posters</Link>
+          <div className="mega">
+            <div className="mega-inner">
+              <div>
+                <h4>Banners</h4>
+                <Link to="/banner-printing">Vinyl</Link>
+                <Link to="/banner-printing">Flex</Link>
               </div>
-
-              <div className="mega-column">
-                <h4>Corporate Printing</h4>
+              <div>
+                <h4>Corporate</h4>
                 <Link to="/corporate-printing">Visiting Cards</Link>
                 <Link to="/corporate-printing">Brochures</Link>
-                <Link to="/corporate-printing">Flyers</Link>
               </div>
-
             </div>
           </div>
-        </li>
+        </div>
 
-      </ul>
+      </nav>
 
-      {/* CSS */}
+      {/* ===== MOBILE MENU ===== */}
+      {mobileOpen && (
+        <div className="mobile-menu">
+
+          <details>
+            <summary>Apparel</summary>
+            <Link to="/tshirt-printing">Round Neck</Link>
+            <Link to="/tshirt-printing">Polo</Link>
+          </details>
+
+          <details>
+            <summary>Drinkware</summary>
+            <Link to="/mug-printing">Ceramic Mugs</Link>
+            <Link to="/mug-printing">Magic Mugs</Link>
+          </details>
+
+          <details>
+            <summary>Marketing</summary>
+            <Link to="/banner-printing">Banners</Link>
+            <Link to="/corporate-printing">Visiting Cards</Link>
+          </details>
+
+        </div>
+      )}
+
+      {/* ===== CSS ===== */}
       <style>{`
 
-        .navbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 18px 40px;
-          background: white;
+        .header {
           position: sticky;
           top: 0;
+          background: white;
           z-index: 1000;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        /* ===== TOP BAR ===== */
+
+        .topbar {
+          display: flex;
+          align-items: center;
+          padding: 14px 28px;
+          gap: 20px;
         }
 
         .logo {
-          font-size: 22px;
           font-weight: 800;
+          font-size: 22px;
+          white-space: nowrap;
         }
 
-        .menu {
+        .search {
+          flex: 1;
+          padding: 12px 16px;
+          border-radius: 30px;
+          border: 1px solid #ddd;
+          font-size: 14px;
+        }
+
+        .actions {
+          display: flex;
+          gap: 14px;
+          align-items: center;
+        }
+
+        .support,
+        .login {
+          background: transparent;
+          border: none;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .hamburger {
+          display: none;
+          font-size: 22px;
+          background: none;
+          border: none;
+          cursor: pointer;
+        }
+
+        /* ===== CATEGORY BAR ===== */
+
+        .category-bar {
           display: flex;
           gap: 40px;
-          list-style: none;
+          padding: 12px 28px;
+          border-top: 1px solid #eee;
+          background: #fafafa;
         }
 
-        .menu-item {
+        .category {
           position: relative;
           font-weight: 600;
           cursor: pointer;
@@ -121,7 +191,7 @@ export default function Navbar() {
 
         /* ===== MEGA MENU ===== */
 
-        .mega-menu {
+        .mega {
           position: absolute;
           left: 0;
           top: 100%;
@@ -130,15 +200,15 @@ export default function Navbar() {
           box-shadow: 0 20px 40px rgba(0,0,0,0.12);
           opacity: 0;
           visibility: hidden;
-          transition: all 0.25s ease;
+          transition: 0.25s;
         }
 
-        .menu-item:hover .mega-menu {
+        .category:hover .mega {
           opacity: 1;
           visibility: visible;
         }
 
-        .mega-container {
+        .mega-inner {
           max-width: 1200px;
           margin: auto;
           padding: 40px;
@@ -147,34 +217,55 @@ export default function Navbar() {
           gap: 40px;
         }
 
-        .mega-column h4 {
-          font-size: 16px;
+        .mega-inner h4 {
           margin-bottom: 12px;
-          font-weight: 700;
         }
 
-        .mega-column a {
+        .mega-inner a {
           display: block;
           color: #555;
           text-decoration: none;
           margin-bottom: 8px;
-          font-size: 14px;
-          transition: color 0.2s;
         }
 
-        .mega-column a:hover {
-          color: #000;
+        .mega-inner a:hover {
           text-decoration: underline;
+          color: black;
         }
 
-        /* MOBILE (disable mega) */
+        /* ===== MOBILE ===== */
+
+        .mobile-menu {
+          padding: 20px;
+          border-top: 1px solid #eee;
+          background: white;
+        }
+
+        .mobile-menu a {
+          display: block;
+          padding: 8px 0;
+          text-decoration: none;
+          color: #333;
+        }
+
         @media (max-width: 900px) {
-          .menu {
+
+          .search {
             display: none;
           }
+
+          .category-bar {
+            display: none;
+          }
+
+          .hamburger {
+            display: block;
+          }
+
         }
 
       `}</style>
-    </nav>
+
+    </header>
   );
 }

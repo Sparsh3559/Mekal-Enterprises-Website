@@ -1,30 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [level, setLevel] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showCategories, setShowCategories] = useState(true);
-
-  // ===== Scroll behavior (show on scroll down) =====
-  useEffect(() => {
-    let last = window.scrollY;
-
-    const handleScroll = () => {
-      const current = window.scrollY;
-
-      if (current > last) {
-        setShowCategories(true);   // scrolling DOWN → show
-      } else {
-        setShowCategories(false);  // scrolling UP → hide
-      }
-
-      last = current;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [openMobile, setOpenMobile] = useState(null);
 
   const categories = [
     {
@@ -57,10 +34,9 @@ export default function Navbar() {
 
         <button
           className="hamburger"
-          onClick={() => {
-            setMobileOpen(true);
-            setLevel(0);
-          }}
+          onClick={() =>
+            setOpenMobile(openMobile === "menu" ? null : "menu")
+          }
         >
           ☰
         </button>
@@ -75,27 +51,28 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ===== DESKTOP CATEGORIES BAR ===== */}
-      <div
-        className={`categories-bar ${
-          showCategories ? "show" : "hide"
-        }`}
-      >
+      {/* ===== CATEGORIES BAR ===== */}
+      <div className="categories">
+
         {categories.map((cat) => (
-          <div key={cat.name} className="category">
+          <div key={cat.name} className="dropdown">
             {cat.name}
 
-            {/* Mega dropdown */}
-            <div className="mega">
+            {/* LEVEL 1 */}
+            <div className="dropdown-content">
               {Object.entries(cat.items).map(
                 ([title, list]) => (
-                  <div key={title} className="col">
-                    <h4>{title}</h4>
-                    {list.map((item) => (
-                      <a key={item} href="#">
-                        {item}
-                      </a>
-                    ))}
+                  <div key={title} className="submenu">
+                    {title}
+
+                    {/* LEVEL 2 */}
+                    <div className="submenu-content">
+                      {list.map((item) => (
+                        <a key={item} href="#">
+                          {item}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )
               )}
@@ -104,63 +81,28 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* ===== MOBILE DRAWER ===== */}
-      {mobileOpen && (
-        <div className="drawer">
+      {/* ===== MOBILE MENU ===== */}
+      {openMobile === "menu" && (
+        <div className="mobile-menu">
+          {categories.map((cat) => (
+            <details key={cat.name}>
+              <summary>{cat.name}</summary>
 
-          <div
-            className="drawer-track"
-            style={{ transform: `translateX(-${level * 100}%)` }}
-          >
+              {Object.entries(cat.items).map(
+                ([title, list]) => (
+                  <details key={title} className="mobile-sub">
+                    <summary>{title}</summary>
 
-            {/* LEVEL 0 */}
-            <div className="panel">
-              <div className="drawer-header">
-                <span>Categories</span>
-                <button onClick={() => setMobileOpen(false)}>✕</button>
-              </div>
-
-              {categories.map((cat) => (
-                <div
-                  key={cat.name}
-                  className="drawer-item"
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setLevel(1);
-                  }}
-                >
-                  {cat.name} ▸
-                </div>
-              ))}
-            </div>
-
-            {/* LEVEL 1 */}
-            <div className="panel">
-              {selectedCategory && (
-                <>
-                  <div className="drawer-header">
-                    <button onClick={() => setLevel(0)}>←</button>
-                    <span>{selectedCategory.name}</span>
-                  </div>
-
-                  {Object.entries(selectedCategory.items).map(
-                    ([title, list]) => (
-                      <div key={title} className="sub-section">
-                        <h4>{title}</h4>
-
-                        {list.map((item) => (
-                          <a key={item} href="#">
-                            {item}
-                          </a>
-                        ))}
-                      </div>
-                    )
-                  )}
-                </>
+                    {list.map((item) => (
+                      <a key={item} href="#">
+                        {item}
+                      </a>
+                    ))}
+                  </details>
+                )
               )}
-            </div>
-
-          </div>
+            </details>
+          ))}
         </div>
       )}
 
@@ -175,9 +117,6 @@ export default function Navbar() {
         padding: 14px 16px;
         background: white;
         border-bottom: 1px solid #eee;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
       }
 
       .logo {
@@ -205,125 +144,97 @@ export default function Navbar() {
         cursor: pointer;
       }
 
-      /* CATEGORIES BAR */
-      .categories-bar {
+      /* ===== DESKTOP DROPDOWN ===== */
+      .categories {
         display: flex;
         gap: 30px;
         padding: 12px 24px;
         background: #fafafa;
         border-bottom: 1px solid #eee;
-        position: sticky;
-        top: 56px;
-        z-index: 999;
-        transition: transform 0.3s;
       }
 
-      .categories-bar.hide {
-        transform: translateY(-100%);
-      }
-
-      .categories-bar.show {
-        transform: translateY(0);
-      }
-
-      .category {
+      .dropdown {
         position: relative;
         font-weight: 600;
         cursor: pointer;
       }
 
-      /* MEGA MENU */
-      .mega {
+      .dropdown-content {
         position: absolute;
-        left: 0;
-        top: 36px;
-        width: 100vw;
-        background: white;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-        padding: 30px 60px;
         display: none;
-        gap: 60px;
+        background: white;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        padding: 10px 0;
+        min-width: 180px;
       }
 
-      .category:hover .mega {
-        display: flex;
-      }
-
-      .col h4 {
-        margin-bottom: 10px;
-      }
-
-      .col a {
+      .dropdown:hover .dropdown-content {
         display: block;
-        margin: 6px 0;
+      }
+
+      .submenu {
+        position: relative;
+        padding: 8px 16px;
+      }
+
+      .submenu-content {
+        position: absolute;
+        left: 100%;
+        top: 0;
+        display: none;
+        background: white;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        min-width: 180px;
+      }
+
+      .submenu:hover .submenu-content {
+        display: block;
+      }
+
+      .submenu-content a {
+        display: block;
+        padding: 8px 16px;
         text-decoration: none;
         color: #444;
       }
 
-      /* MOBILE DRAWER */
-      .drawer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 85%;
-        height: 100vh;
-        background: white;
-        z-index: 3000;
-        overflow: hidden;
-        box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+      .submenu-content a:hover {
+        background: #f2f2f2;
       }
 
-      .drawer-track {
-        display: flex;
-        width: 200%;
-        height: 100%;
-        transition: transform 0.35s ease;
-      }
-
-      .panel {
-        width: 100%;
+      /* ===== MOBILE MENU ===== */
+      .mobile-menu {
         padding: 16px;
-        overflow-y: auto;
+        background: white;
+        border-top: 1px solid #eee;
       }
 
-      .drawer-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        font-weight: 700;
-      }
-
-      .drawer-item {
-        padding: 14px 0;
-        border-bottom: 1px solid #eee;
+      details summary {
+        padding: 10px 0;
         font-weight: 600;
         cursor: pointer;
       }
 
-      .sub-section {
-        margin-bottom: 20px;
+      .mobile-sub {
+        margin-left: 12px;
       }
 
-      .sub-section a {
+      .mobile-sub a {
         display: block;
         padding: 6px 0;
         color: #444;
         text-decoration: none;
       }
 
-      /* MOBILE */
+      /* RESPONSIVE */
       @media (max-width: 768px) {
-        .categories-bar {
+        .categories {
           display: none;
         }
       }
 
       @media (min-width: 768px) {
         .hamburger {
-          display: none;
-        }
-
-        .drawer {
           display: none;
         }
       }

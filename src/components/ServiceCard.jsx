@@ -1,81 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { Card, CardContent } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react"
 
 export default function ServiceCard({ title, image, path }) {
   return (
-    <div className="service-card">
-      <img src={image} alt={title} />
+    <Link to={path} className="group block">
+      <Card className="
+        overflow-hidden
+        border
+        bg-white
+        transition-all duration-300
+        hover:shadow-md
+      ">
 
-      <div className="overlay">
-        <h3>{title}</h3>
+        {/* IMAGE */}
+        <div className="overflow-hidden">
+          <img
+            src={image}
+            alt={title}
+            className="
+              w-full h-56 object-cover
+              transition-transform duration-500
+              group-hover:scale-105
+            "
+          />
+        </div>
 
-        {/* 🔥 THIS BUTTON NOW NAVIGATES */}
-        <Link to={path} className="read-btn">
-          READ MORE
-        </Link>
-      </div>
+        {/* CONTENT */}
+        <CardContent className="p-6 flex items-center justify-between">
 
-      <style>{`
-        .service-card {
-          position: relative;
-          overflow: hidden;
-          background: #fff;
-          cursor: pointer;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+          <h3 className="text-lg font-medium text-gray-900">
+            {title}
+          </h3>
 
-        .service-card img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.4s ease;
-        }
+          <ArrowRight
+            size={18}
+            className="
+              text-gray-400
+              transition-all duration-300
+              group-hover:text-black
+              group-hover:translate-x-1
+            "
+          />
 
-        .service-card:hover img {
-          transform: scale(1.08);
-        }
+        </CardContent>
 
-        .overlay {
-          position: absolute;
-          inset: 0;
-          background: rgba(0,0,0,0.65);
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          padding: 20px;
-          color: white;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .service-card:hover .overlay {
-          opacity: 1;
-        }
-
-        .overlay h3 {
-          font-size: 20px;
-          font-weight: 700;
-          margin-bottom: 12px;
-        }
-
-        /* 🔥 Styled Link like button */
-        .read-btn {
-          align-self: flex-start;
-          background: #ff3b1f;
-          color: white;
-          padding: 10px 18px;
-          font-size: 13px;
-          font-weight: 600;
-          text-decoration: none;
-          cursor: pointer;
-        }
-
-        .service-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 18px 45px rgba(0,0,0,0.18);
-        }
-      `}</style>
-    </div>
-  );
+      </Card>
+    </Link>
+  )
 }

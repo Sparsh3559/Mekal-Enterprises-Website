@@ -1,28 +1,28 @@
+import { MessageCircle } from "lucide-react"
+
 export default function WhatsAppButton() {
-    return (
-      <a
-        href="https://wa.me/919999999999"
-        target="_blank"
-        rel="noreferrer"
-        style={{
-          position: "fixed",
-          right: 16,
-          bottom: 20,
-          width: 60,
-          height: 60,
-          background: "#25D366",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "white",
-          fontSize: 28,
-          textDecoration: "none",
-          boxShadow: "0 6px 15px rgba(0,0,0,0.3)",
-          zIndex: 1000,
-        }}
-      >
-        🟢
-      </a>
-    );
-  }
+  const phone = "919999999999"
+
+  return (
+    <a
+      href={`https://wa.me/${phone}`}
+      target="_blank"
+      rel="noreferrer"
+      className="
+        fixed bottom-6 right-6
+        w-14 h-14
+        rounded-full
+        bg-[#25D366]
+        text-white
+        flex items-center justify-center
+        shadow-lg
+        hover:scale-105 hover:shadow-xl
+        transition-all duration-200
+        z-50
+      "
+      aria-label="Chat on WhatsApp"
+    >
+      <MessageCircle size={28} />
+    </a>
+  )
+}

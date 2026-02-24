@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function HeroSlider() {
   const slides = [
     {
-      title: "A Little Thank You, Just for Her",
-      subtitle:
-        "Women’s Day gift hampers to make her feel appreciated",
-      button: "Use Code: HER26",
-      image:
-        "https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1920",
-    },
-    {
       title: "Premium Custom Printing",
-      subtitle: "Creative, customisable, cost-effective",
+      subtitle: "Creative, customisable, cost-effective solutions",
       button: "Explore Services",
       image:
         "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1920",
@@ -24,200 +18,97 @@ export default function HeroSlider() {
       image:
         "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=1920",
     },
-  ];
+    {
+      title: "High-Quality Apparel Printing",
+      subtitle: "Designed for brands, events & individuals",
+      button: "Start Designing",
+      image:
+        "https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1920",
+    },
+  ]
 
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
 
   const next = () =>
-    setIndex((prev) => (prev + 1) % slides.length);
+    setIndex((prev) => (prev + 1) % slides.length)
 
   const prev = () =>
     setIndex((prev) =>
       prev === 0 ? slides.length - 1 : prev - 1
-    );
+    )
 
-  // Auto play
+  // Auto-play
   useEffect(() => {
-    const timer = setInterval(next, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    const timer = setInterval(next, 6000)
+    return () => clearInterval(timer)
+  }, [])
 
   return (
-    <section className="hero-slider">
+    <section className="relative w-full h-[80vh] overflow-hidden">
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`slide ${i === index ? "active" : ""}`}
-          style={{ backgroundImage: `url(${slide.image})` }}
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            i === index ? "opacity-100" : "opacity-0"
+          }`}
         >
-          <div className="overlay" />
+          {/* Background Image */}
+          <img
+            src={slide.image}
+            alt=""
+            className="w-full h-full object-cover"
+          />
 
-          <div className="content">
-            <h2>{slide.title}</h2>
-            <p>{slide.subtitle}</p>
-            <button>{slide.button}</button>
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+
+          {/* Content */}
+          <div className="absolute left-[8%] top-1/2 -translate-y-1/2 max-w-xl text-white">
+            <h1 className="text-4xl md:text-5xl font-semibold leading-tight mb-4">
+              {slide.title}
+            </h1>
+
+            <p className="text-lg text-white/80 mb-6">
+              {slide.subtitle}
+            </p>
+
+            <Button size="lg" className="rounded-full px-8">
+              {slide.button}
+            </Button>
           </div>
         </div>
       ))}
 
-      {/* ARROWS */}
-      <button className="arrow left" onClick={prev}>
-        ‹
+      {/* Left Arrow */}
+      <button
+        onClick={prev}
+        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 backdrop-blur flex items-center justify-center text-white hover:bg-black/70 transition"
+      >
+        <ChevronLeft />
       </button>
 
-      <button className="arrow right" onClick={next}>
-        ›
+      {/* Right Arrow */}
+      <button
+        onClick={next}
+        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 backdrop-blur flex items-center justify-center text-white hover:bg-black/70 transition"
+      >
+        <ChevronRight />
       </button>
 
-      {/* DOTS */}
-      <div className="dots">
+      {/* Pagination */}
+      <div className="absolute bottom-8 left-[8%] flex gap-3">
         {slides.map((_, i) => (
-          <span
+          <button
             key={i}
-            className={i === index ? "active" : ""}
             onClick={() => setIndex(i)}
+            className={`h-[6px] rounded-full transition-all duration-300 ${
+              i === index
+                ? "w-10 bg-white"
+                : "w-4 bg-white/50 hover:bg-white"
+            }`}
           />
         ))}
       </div>
-
-      <style>{`
-
-      .hero-slider {
-        position: relative;
-        width: 100%;
-        height: calc(100vh - 120px);
-        overflow: hidden;
-      }
-
-      .slide {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 0.8s ease;
-      }
-
-      .slide.active {
-        opacity: 1;
-      }
-
-      .overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.35);
-      }
-
-      .content {
-        position: absolute;
-        left: 8%;
-        top: 50%;
-        transform: translateY(-50%);
-        color: white;
-        max-width: 520px;
-      }
-
-      h2 {
-        font-size: 42px;
-        font-weight: 800;
-        margin-bottom: 14px;
-      }
-
-      p {
-        font-size: 18px;
-        margin-bottom: 22px;
-      }
-
-      button {
-        background: #1f3b6f;
-        color: white;
-        border: none;
-        padding: 14px 28px;
-        border-radius: 30px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      /* ===== MODERN ARROWS ===== */
-
-      .arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        border: none;
-        background: rgba(0,0,0,0.55);
-        color: white;
-        font-size: 26px;
-        cursor: pointer;
-        opacity: 0;
-        transition: 0.3s;
-      }
-
-      .left { left: 20px; }
-      .right { right: 20px; }
-
-      /* Show arrows on hover */
-      .hero-slider:hover .arrow {
-        opacity: 1;
-      }
-
-      .arrow:hover {
-        background: rgba(0,0,0,0.8);
-      }
-
-      /* ===== MODERN DOTS ===== */
-
-      .dots {
-        position: absolute;
-        bottom: 22px;
-        left: 8%;
-        display: flex;
-        gap: 10px;
-      }
-
-      .dots span {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.5);
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .dots span.active {
-        background: white;
-        transform: scale(1.3);
-      }
-
-      /* MOBILE */
-
-      @media (max-width: 768px) {
-        .content {
-          left: 20px;
-          right: 20px;
-        }
-
-        h2 {
-          font-size: 26px;
-        }
-
-        p {
-          font-size: 15px;
-        }
-
-        .hero-slider {
-          height: 60vh;
-        }
-
-        .arrow {
-          opacity: 1; /* Always visible on mobile */
-        }
-      }
-
-      `}</style>
     </section>
-  );
+  )
 }

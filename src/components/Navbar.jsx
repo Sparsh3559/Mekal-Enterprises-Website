@@ -1,96 +1,117 @@
-import { useState } from "react";
-import "./Navbar.css";
+"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
 
 export default function Navbar() {
-  const [active, setActive] = useState(null);
-
-  const menu = [
-    {
-      name: "Apparel",
-      sections: {
-        "Explore Apparel": [
-          "T-Shirts",
-          "Polo T-Shirts",
-          "Oversized Tees",
-          "Hoodies",
-        ],
-        "Printing Options": [
-          "Screen Printing",
-          "DTF Printing",
-          "Embroidery",
-        ],
-      },
-    },
-    {
-      name: "Drinkware",
-      sections: {
-        "Mugs": ["Ceramic Mug", "Magic Mug", "Photo Mug"],
-        "Bottles": ["Steel Bottle", "Sipper Bottle"],
-      },
-    },
-    {
-      name: "Marketing",
-      sections: {
-        "Office": ["Visiting Cards", "Letterheads", "ID Cards"],
-        "Outdoor": ["Flex Banner", "Standee", "Posters"],
-      },
-    },
-  ];
+  const [open, setOpen] = useState(false)
 
   return (
-    <header
-      className="nav-wrapper"
-      onMouseLeave={() => setActive(null)}
-    >
+    <header className="sticky top-0 z-50 bg-white border-b">
+
       {/* ===== TOP BAR ===== */}
-      <div className="nav-top">
-        <div className="logo">PRINT HUB</div>
+      <div className="flex items-center justify-between px-6 py-3">
 
-        <nav className="nav-center">
-          {menu.map((item) => (
-            <div
-              key={item.name}
-              className="nav-item"
-              onMouseEnter={() => setActive(item.name)}
-            >
-              {item.name}
+        {/* Mobile Hamburger */}
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" className="md:hidden">
+              ☰
+            </Button>
+          </SheetTrigger>
+
+          {/* MOBILE DRAWER */}
+          <SheetContent side="left" className="w-80">
+            <div className="space-y-4 mt-6">
+              <h2 className="text-xl font-bold">Categories</h2>
+
+              <div className="space-y-2">
+                <Button variant="ghost" className="w-full justify-start">
+                  Apparel
+                </Button>
+                <Button variant="ghost" className="w-full justify-start">
+                  Drinkware
+                </Button>
+                <Button variant="ghost" className="w-full justify-start">
+                  Marketing
+                </Button>
+              </div>
             </div>
-          ))}
-        </nav>
+          </SheetContent>
+        </Sheet>
 
-        <div className="nav-actions">
-          <button>Support</button>
-          <button>Login</button>
-          <h1 className="text-5xl font-bold text-red-500">
-            Tailwind is working 🔥
-          </h1>
+        {/* LOGO */}
+        <div className="text-xl font-bold">PRINT HUB</div>
+
+        {/* SEARCH */}
+        <div className="hidden md:flex flex-1 max-w-xl mx-6">
+          <Input placeholder="Search products..." />
+        </div>
+
+        {/* ACTIONS */}
+        <div className="flex items-center gap-3">
+          <Button variant="ghost">Support</Button>
+          <Button>Login</Button>
         </div>
       </div>
 
-      {/* ===== MEGA MENU ===== */}
-      {menu.map((item) => (
-        <div
-          key={item.name}
-          className={`mega-menu ${active === item.name ? "active" : ""
-            }`}
-        >
-          <div className="mega-content">
-            {Object.entries(item.sections).map(
-              ([title, links]) => (
-                <div key={title} className="mega-column">
-                  <h4>{title}</h4>
+      {/* ===== CATEGORIES BAR (DESKTOP) ===== */}
+      <div className="hidden md:flex justify-center border-t bg-white">
 
-                  {links.map((link) => (
-                    <a key={link} href="#">
-                      {link}
-                    </a>
-                  ))}
+        <NavigationMenu>
+          <NavigationMenuList>
+
+            {/* APPAREL */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Apparel</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid grid-cols-2 gap-4 p-6 w-[400px]">
+                  <NavigationMenuLink>T-Shirts</NavigationMenuLink>
+                  <NavigationMenuLink>Hoodies</NavigationMenuLink>
+                  <NavigationMenuLink>Caps</NavigationMenuLink>
+                  <NavigationMenuLink>Jackets</NavigationMenuLink>
                 </div>
-              )
-            )}
-          </div>
-        </div>
-      ))}
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            {/* DRINKWARE */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Drinkware</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid grid-cols-2 gap-4 p-6 w-[400px]">
+                  <NavigationMenuLink>Mugs</NavigationMenuLink>
+                  <NavigationMenuLink>Bottles</NavigationMenuLink>
+                  <NavigationMenuLink>Tumblers</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            {/* MARKETING */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Marketing</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid grid-cols-2 gap-4 p-6 w-[400px]">
+                  <NavigationMenuLink>Visiting Cards</NavigationMenuLink>
+                  <NavigationMenuLink>Banners</NavigationMenuLink>
+                  <NavigationMenuLink>Flyers</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+          </NavigationMenuList>
+        </NavigationMenu>
+
+      </div>
     </header>
-  );
+  )
 }

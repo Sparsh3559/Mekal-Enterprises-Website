@@ -1,157 +1,172 @@
+import { useEffect, useState } from "react";
+
 export default function Hero() {
-    const whatsappNumber = "919999999999"; // <-- replace with client number
-  
-    const openWhatsApp = () => {
-      window.open(
-        `https://wa.me/${whatsappNumber}?text=Hello%20I%20want%20printing%20services`,
-        "_blank"
-      );
-    };
-  
-    return (
-      <section className="hero">
-        <div className="hero-content">
-          <h1>
-            Premium Custom Printing
-            <br />
-            For Brands & Events
-          </h1>
-  
-          <p>
-            T-shirts, merchandise, corporate printing, bulk orders and
-            personalized products — all in one place.
-          </p>
-  
-          <div className="hero-buttons">
-            <button className="primary" onClick={openWhatsApp}>
-              Get Quote on WhatsApp
-            </button>
-  
-            <button
-              className="secondary"
-              onClick={() =>
-                document.getElementById("services")?.scrollIntoView({
-                  behavior: "smooth",
-                })
-              }
-            >
-              View Services
-            </button>
+  const slides = [
+    {
+      title: "CUSTOM PRINTING & CORPORATE GIFTING",
+      subtitle: "Creative, customisable, and cost-effective",
+      button: "Explore Corporate Gifts",
+      image:
+        "https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1920",
+    },
+    {
+      title: "PREMIUM T-SHIRT PRINTING",
+      subtitle: "Bulk orders for events, brands & teams",
+      button: "View T-Shirt Printing",
+      image:
+        "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1920",
+    },
+    {
+      title: "PERSONALISED MUG PRINTING",
+      subtitle: "Perfect for gifts & branding",
+      button: "Shop Mugs",
+      image:
+        "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=1920",
+    },
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  // Auto slide
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="hero-slider">
+      {slides.map((slide, i) => (
+        <div
+          key={i}
+          className={`slide ${i === index ? "active" : ""}`}
+          style={{ backgroundImage: `url(${slide.image})` }}
+        >
+          <div className="overlay" />
+
+          <div className="content">
+            <h2>{slide.title}</h2>
+            <p>{slide.subtitle}</p>
+            <button>{slide.button}</button>
           </div>
         </div>
-  
-        <style>{`
-          /* ===== HERO SECTION ===== */
-  
-          .hero {
-            width: 100%;
-  
-            /* Full screen below navbar */
-            height: calc(100vh - 64px);
-            min-height: 520px;
-  
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-  
-            padding: 40px 20px;
-  
-            background:
-              linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-              ),
-              url("https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1920");
-  
-            background-size: cover;
-            background-position: 70% center; /* better desktop composition */
-            background-repeat: no-repeat;
-  
-            color: white;
-          }
-  
-          /* ===== CONTENT ===== */
-  
-          .hero-content {
-            max-width: 700px;
-          }
-  
-          .hero h1 {
-            font-size: 38px;
-            line-height: 1.2;
-            margin-bottom: 18px;
-            font-weight: 800;
-          }
-  
-          .hero p {
-            font-size: 16px;
-            opacity: 0.95;
-            margin-bottom: 28px;
-          }
-  
-          /* ===== BUTTONS ===== */
-  
-          .hero-buttons {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            justify-content: center;
-          }
-  
-          .primary {
-            background: #25d366;
-            color: white;
-            border: none;
-            padding: 14px 22px;
-            font-size: 15px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-          }
-  
-          .secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            padding: 12px 22px;
-            font-size: 15px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-          }
-  
-          /* ===== DESKTOP ===== */
-  
-          @media (min-width: 768px) {
-            .hero {
-              padding: 80px clamp(40px, 8vw, 120px);
-              text-align: left;
-            }
-  
-            .hero h1 {
-              font-size: 56px;
-            }
-  
-            .hero p {
-              font-size: 18px;
-            }
-  
-            .hero-buttons {
-              justify-content: flex-start;
-            }
-          }
-  
-          /* ===== MOBILE ===== */
-  
-          @media (max-width: 767px) {
-            .hero {
-              justify-content: center;
-              text-align: center;
-              background-position: center;
-              min-height: 80vh;
-            }
-          }
-        `}</style>
-      </section>
-    );
-  }
+      ))}
+
+      {/* DOTS */}
+      <div className="dots">
+        {slides.map((_, i) => (
+          <span
+            key={i}
+            className={i === index ? "active" : ""}
+            onClick={() => setIndex(i)}
+          />
+        ))}
+      </div>
+
+      <style>{`
+      
+      .hero-slider {
+        position: relative;
+        width: 100%;
+        height: calc(100vh - 120px);
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+      }
+
+      .slide.active {
+        opacity: 1;
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+      }
+
+      .content {
+        position: absolute;
+        left: 8%;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        max-width: 520px;
+      }
+
+      h2 {
+        font-size: 38px;
+        font-weight: 800;
+        margin-bottom: 16px;
+      }
+
+      p {
+        font-size: 18px;
+        margin-bottom: 24px;
+      }
+
+      button {
+        background: white;
+        color: #111;
+        border: none;
+        padding: 14px 26px;
+        border-radius: 28px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* DOTS */
+
+      .dots {
+        position: absolute;
+        bottom: 20px;
+        left: 8%;
+        display: flex;
+        gap: 8px;
+      }
+
+      .dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+      }
+
+      .dots span.active {
+        background: white;
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 768px) {
+        .content {
+          left: 20px;
+          right: 20px;
+        }
+
+        h2 {
+          font-size: 26px;
+        }
+
+        p {
+          font-size: 15px;
+        }
+
+        .hero-slider {
+          height: 60vh;
+        }
+      }
+
+      `}</style>
+    </section>
+  );
+}

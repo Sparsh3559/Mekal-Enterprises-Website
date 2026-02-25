@@ -1,33 +1,30 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { supabase } from "@/lib/supabase"
 
 export default function HeroSlider() {
-  const slides = [
-    {
-      title: "Premium Custom Printing",
-      subtitle: "Creative, customisable, cost-effective solutions",
-      button: "Explore Services",
-      image:
-        "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1920",
-    },
-    {
-      title: "Corporate Gifting Solutions",
-      subtitle: "Perfect for teams, events & branding",
-      button: "View Products",
-      image:
-        "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=1920",
-    },
-    {
-      title: "High-Quality Apparel Printing",
-      subtitle: "Designed for brands, events & individuals",
-      button: "Start Designing",
-      image:
-        "https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1920",
-    },
-  ]
-
+  const [slides, setSlides] = useState([])
   const [index, setIndex] = useState(0)
+
+  // 🔥 Fetch banners from Supabase
+  useEffect(() => {
+    fetchBanners()
+  }, [])
+
+  async function fetchBanners() {
+    const { data, error } = await supabase
+      .from("Banners")
+      .select("*")
+      .order("id")
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setSlides(data)
+  }
 
   const next = () =>
     setIndex((prev) => (prev + 1) % slides.length)
@@ -39,23 +36,27 @@ export default function HeroSlider() {
 
   // Auto-play
   useEffect(() => {
+    if (slides.length === 0) return
     const timer = setInterval(next, 6000)
     return () => clearInterval(timer)
-  }, [])
+  }, [slides])
+
+  if (slides.length === 0)
+    return <div className="h-[80vh] flex items-center justify-center">Loading...</div>
 
   return (
     <section className="relative w-full h-[80vh] overflow-hidden">
       {slides.map((slide, i) => (
         <div
-          key={i}
+          key={slide.id}
           className={`absolute inset-0 transition-opacity duration-700 ${
             i === index ? "opacity-100" : "opacity-0"
           }`}
         >
-          {/* Background Image */}
+          {/* Background Image from DB */}
           <img
-            src={slide.image}
-            alt=""
+            src={slide.image_url}
+            alt={slide.title}
             className="w-full h-full object-cover"
           />
 
@@ -72,10 +73,8 @@ export default function HeroSlider() {
               {slide.subtitle}
             </p>
 
-            <img src="https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/sunflower_yellow_flowers_215332.jpg" alt="product" />
-
             <Button size="lg" className="rounded-full px-8">
-              {slide.button}
+              {slide.button_text}
             </Button>
           </div>
         </div>

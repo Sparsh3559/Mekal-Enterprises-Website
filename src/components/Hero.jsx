@@ -72,7 +72,7 @@ export default function HeroSlider() {
               {slide.subtitle}
             </p>
 
-            <img src="https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/IMG_2753.HEIC" alt="product" />
+            <img src="https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/sunflower_yellow_flowers_215332.jpg" alt="product" />
 
             <Button size="lg" className="rounded-full px-8">
               {slide.button}

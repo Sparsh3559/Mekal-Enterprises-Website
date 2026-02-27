@@ -1,60 +1,27 @@
-import { Link, useLocation, Outlet } from "react-router-dom"
-import {
-  LayoutDashboard,
-  PackagePlus,
-  Package,
-  Image,
-  Tag,
-} from "lucide-react"
+import { Link } from "react-router-dom"
 
-const navItems = [
-  { to: "/admin",             label: "Dashboard",      icon: LayoutDashboard },
-  { to: "/admin/add-product", label: "Add Product",    icon: PackagePlus     },
-  { to: "/admin/products",    label: "Manage Products",icon: Package         },
-  { to: "/admin/categories",  label: "Categories",     icon: Tag             },
-  { to: "/admin/banners",     label: "Banners",        icon: Image           },
-]
-
-export default function AdminLayout() {
-  const { pathname } = useLocation()
-
+export default function AdminLayout({ children }) {
   return (
     <div className="min-h-screen flex bg-zinc-50">
 
-      {/* ── Sidebar ── */}
-      <aside className="w-60 bg-white border-r flex flex-col p-5 flex-shrink-0">
-        <h2 className="text-lg font-semibold mb-8 px-2">Admin Panel</h2>
+      {/* SIDEBAR */}
+      <aside className="w-64 bg-white border-r p-6">
+        <h2 className="text-xl font-semibold mb-8">
+          Admin Panel
+        </h2>
 
-        <nav className="flex flex-col gap-1">
-          {navItems.map(({ to, label, icon: Icon }) => {
-            const isActive =
-              to === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(to)
-
-            return (
-              <Link
-                key={to}
-                to={to}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-zinc-900 text-white"
-                    : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
-                }`}
-              >
-                <Icon size={16} />
-                {label}
-              </Link>
-            )
-          })}
+        <nav className="flex flex-col gap-4 text-sm">
+          <Link to="/admin">Dashboard</Link>
+          <Link to="/admin/add-product">Add Product</Link>
+          <Link to="/admin/products">Manage Products</Link>
+          <Link to="/admin/banners">Banners</Link>
         </nav>
       </aside>
 
-      {/* ── Main content ── */}
-      <main className="flex-1 p-8 overflow-auto">
-        <Outlet />
+      {/* MAIN CONTENT */}
+      <main className="flex-1 p-8">
+        {children}
       </main>
-
     </div>
   )
 }

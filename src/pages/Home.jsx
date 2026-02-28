@@ -163,7 +163,7 @@ export default function Home() {
       />
 
       {/* ── Corporate Gifting Promo ── */}
-      <PromoSection
+      <Promosection
         tag="Corporate Solutions"
         heading="Corporate Gifting for Every Occasion"
         description="Build lasting impressions with premium branded merchandise. From onboarding kits to festive hampers — crafted for teams of all sizes. Order in bulk or single pieces."

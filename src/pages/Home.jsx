@@ -4,8 +4,8 @@ import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import WhatsAppButton from "../components/WhatsAppButton"
 import Footer from "../components/Footer"
-import TrustBar from "../components/TrustBar"
-import PromoSection from "../components/PromoSection"
+import Trustbar from "../components/Trustbar"
+import Promosection from "../components/Promosection"
 import { services } from "../data/services"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -42,7 +42,7 @@ export default function Home() {
       <Hero />
 
       {/* ── Trust Bar ── */}
-      <TrustBar />
+      <Trustbar />
 
       {/* ── Services Carousel ── */}
       <section className="py-20 bg-white">
@@ -139,7 +139,7 @@ export default function Home() {
       </section>
 
       {/* ── Women's Day Promo ── */}
-      <PromoSection
+      <Promosection
         tag="Women's Day Special"
         heading="Women's Day Gifts for Your Employees"
         description="Thoughtfully curated gifts that show you value your women workforce. Premium hampers, personalized gifts, and elegant accessories. Order as low as single quantity."
@@ -172,7 +172,7 @@ export default function Home() {
       />
 
       {/* ── Corporate Gifting Promo ── */}
-      <PromoSection
+      <Promosection
         tag="Corporate Solutions"
         heading="Corporate Gifting for Every Occasion"
         description="Build lasting impressions with premium branded merchandise. From onboarding kits to festive hampers — crafted for teams of all sizes. Order in bulk or single pieces."

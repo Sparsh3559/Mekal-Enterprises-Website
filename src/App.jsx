@@ -6,33 +6,32 @@ import MugPrinting from "./pages/MugPrinting";
 import CorporatePrinting from "./pages/CorporatePrinting";
 import BannerPrinting from "./pages/BannerPrinting";
 
-import AdminLayout from "./components/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AddProduct from "./pages/admin/products/AddProduct";
 import ManageProducts from "./pages/admin/products/ManageProducts";
 import ManageBanners from "./pages/admin/banners/ManageBanners";
 import ManageCategories from "./pages/admin/categories/ManageCategories";
 
+import "./App.css";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Client site */}
+        {/* Client */}
         <Route path="/" element={<Home />} />
         <Route path="/tshirt-printing" element={<TShirtPrinting />} />
         <Route path="/mug-printing" element={<MugPrinting />} />
         <Route path="/corporate-printing" element={<CorporatePrinting />} />
         <Route path="/banner-printing" element={<BannerPrinting />} />
 
-        {/* Admin */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="add-product" element={<AddProduct />} />
-          <Route path="products" element={<ManageProducts />} />
-          <Route path="categories" element={<ManageCategories />} />
-          <Route path="banners" element={<ManageBanners />} />
-        </Route>
+        {/* Admin — flat routes, each page wraps itself in AdminLayout */}
+        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/admin/add-product" element={<AddProduct />} />
+        <Route path="/admin/products" element={<ManageProducts />} />
+        <Route path="/admin/categories" element={<ManageCategories />} />
+        <Route path="/admin/banners" element={<ManageBanners />} />
 
       </Routes>
     </BrowserRouter>

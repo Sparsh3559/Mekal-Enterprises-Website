@@ -1,87 +1,121 @@
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, MapPin } from "lucide-react"
+import mekalLogo from "../assets/images/mekal logo.jpg"
 
 export default function Footer() {
-  const whatsappNumber = "919999999999" // replace
+  const whatsappNumber = "919999999999" // replace with real number
 
   return (
-    <footer className="bg-zinc-950 text-zinc-300 mt-24">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid gap-12 md:grid-cols-4">
+    <footer style={{ backgroundColor: "#065999" }} className="text-white relative">
 
-        {/* BRAND */}
+      {/* ── Wave top edge ── */}
+      <div className="w-full overflow-hidden leading-none -mt-1">
+        <svg
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          className="w-full h-16 md:h-20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,0 L0,0 Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+
+      {/* ── Main content ── */}
+      <div className="max-w-7xl mx-auto px-6 pb-12 pt-4 grid gap-12 md:grid-cols-4">
+
+        {/* Brand */}
         <div>
-          <h3 className="text-white text-2xl font-semibold mb-4">
-            PrintCraft
-          </h3>
-
-          <p className="text-sm leading-relaxed text-zinc-400">
-            Premium custom printing solutions for businesses,
-            events, and personal needs.
+          <img
+            src={mekalLogo}
+            alt="Mekal Enterprises"
+            className="h-16 w-auto object-contain mb-4"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <p className="text-sm leading-relaxed text-white/70">
+            Premium custom printing solutions for businesses, events, and personal needs.
           </p>
+          {/* Social icons placeholder */}
+          <div className="flex gap-3 mt-5">
+            {["in", "fb", "ig"].map((s) => (
+              <div
+                key={s}
+                className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-[10px] font-bold text-white/60 hover:border-white hover:text-white cursor-pointer transition-colors"
+              >
+                {s}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* SERVICES */}
+        {/* Services */}
         <div>
-          <h4 className="text-white font-medium mb-4">
+          <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest">
             Services
           </h4>
-
-          <ul className="space-y-2 text-sm">
-            <li className="hover:text-white cursor-pointer">T-Shirt Printing</li>
-            <li className="hover:text-white cursor-pointer">Mug Printing</li>
-            <li className="hover:text-white cursor-pointer">Corporate Printing</li>
-            <li className="hover:text-white cursor-pointer">Banner & Poster</li>
+          <ul className="space-y-2.5 text-sm text-white/70">
+            {["Custom Apparel", "Drinkware", "Corporate Gifting", "Merchandise", "Caps & Badges", "ID Cards"].map((s) => (
+              <li key={s} className="hover:text-white cursor-pointer transition-colors">{s}</li>
+            ))}
           </ul>
         </div>
 
-        {/* QUICK LINKS */}
+        {/* Quick Links */}
         <div>
-          <h4 className="text-white font-medium mb-4">
+          <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest">
             Quick Links
           </h4>
-
-          <ul className="space-y-2 text-sm">
-            <li className="hover:text-white cursor-pointer">Home</li>
-            <li className="hover:text-white cursor-pointer">Services</li>
-            <li className="hover:text-white cursor-pointer">About</li>
-            <li className="hover:text-white cursor-pointer">Contact</li>
+          <ul className="space-y-2.5 text-sm text-white/70">
+            {[
+              { label: "Home", to: "/" },
+              { label: "Services", to: "/" },
+              { label: "About", to: "/" },
+              { label: "Contact", to: "/" },
+            ].map((l) => (
+              <li key={l.label}>
+                <Link to={l.to} className="hover:text-white transition-colors">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* CONTACT */}
+        {/* Contact */}
         <div>
-          <h4 className="text-white font-medium mb-4">
+          <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest">
             Contact
           </h4>
-
-          <div className="space-y-3 text-sm">
-            <p className="flex items-center gap-2">
-              <Phone size={16} /> +91 99999 99999
+          <div className="space-y-3 text-sm text-white/70">
+            <p className="flex items-center gap-2.5">
+              <Phone size={15} className="flex-shrink-0 text-white/50" />
+              +91 99999 99999
             </p>
-
-            <p className="flex items-center gap-2">
-              <Mail size={16} /> info@printcraft.com
+            <p className="flex items-center gap-2.5">
+              <Mail size={15} className="flex-shrink-0 text-white/50" />
+              info@printhub.com
             </p>
-
-            <p className="flex items-center gap-2">
-              <MapPin size={16} /> Indore, India
+            <p className="flex items-center gap-2.5">
+              <MapPin size={15} className="flex-shrink-0 text-white/50" />
+              Indore, India
             </p>
           </div>
 
           <Button
-            className="mt-5 w-full rounded-full bg-green-500 hover:bg-green-600"
-            onClick={() =>
-              window.open(`https://wa.me/${whatsappNumber}`, "_blank")
-            }
+            className="mt-6 w-full rounded-full bg-green-400 hover:bg-green-300 text-green-950 font-semibold text-sm"
+            onClick={() => window.open(`https://wa.me/${whatsappNumber}`, "_blank")}
           >
             Chat on WhatsApp
           </Button>
         </div>
       </div>
 
-      {/* BOTTOM */}
-      <div className="border-t border-zinc-800 text-center text-xs text-zinc-500 py-6">
-        © {new Date().getFullYear()} PrintCraft. All rights reserved.
+      {/* ── Bottom bar ── */}
+      <div className="border-t border-white/10 text-center text-xs text-white/40 py-5">
+        © {new Date().getFullYear()} Print Hub. All rights reserved.
       </div>
     </footer>
   )

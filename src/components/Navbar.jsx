@@ -12,6 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { ChevronDown, ChevronRight } from "lucide-react"
+import mekalLogo from "../assets/images/mekal logo.jpg"
 
 // ── Hardcoded category data ───────────────────────────────────────────────────
 const NAV_CATEGORIES = [
@@ -127,7 +128,7 @@ export default function Navbar() {
     setExpandedSection((prev) => ({ ...prev, [key]: !prev[key] }))
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b">
+    <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: "#065999" }}>
 
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-6 py-3">
@@ -135,7 +136,7 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" className="md:hidden">☰</Button>
+            <Button variant="ghost" className="md:hidden text-white hover:bg-white/10">☰</Button>
           </SheetTrigger>
 
           {/* ── Mobile drawer ── */}
@@ -201,27 +202,35 @@ export default function Navbar() {
         </Sheet>
 
         {/* Logo */}
-        <div className="text-xl font-bold tracking-tight">PRINT HUB</div>
+        <img
+          src={mekalLogo}
+          alt="Mekal Enterprises"
+          className="h-12 w-auto object-contain"
+          style={{ filter: "brightness(0) invert(1)" }}
+        />
 
         {/* Search */}
         <div className="hidden md:flex flex-1 max-w-xl mx-6">
-          <Input placeholder="Search products..." />
+          <Input
+            placeholder="Search products..."
+            className="bg-white/15 border-white/20 text-white placeholder:text-white/50 focus:bg-white focus:text-zinc-900 transition-colors"
+          />
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost">Support</Button>
-          <Button>Login</Button>
+          <Button variant="ghost" className="text-white hover:bg-white/10">Support</Button>
+          <Button className="bg-white text-[#065999] hover:bg-white/90 font-semibold">Login</Button>
         </div>
       </div>
 
       {/* ── Desktop categories bar ── */}
-      <div className="hidden md:flex justify-center border-t bg-white">
+      <div className="hidden md:flex justify-center border-t border-white/20" style={{ backgroundColor: "#065999" }}>
         <NavigationMenu className="max-w-full">
           <NavigationMenuList className="flex-wrap justify-center">
             {NAV_CATEGORIES.map((cat) => (
               <NavigationMenuItem key={cat.label}>
-                <NavigationMenuTrigger className="text-sm font-medium">
+                <NavigationMenuTrigger className="text-sm font-medium text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
                   {cat.label}
                 </NavigationMenuTrigger>
 

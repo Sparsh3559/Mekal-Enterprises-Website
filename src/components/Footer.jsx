@@ -33,7 +33,6 @@ export default function Footer() {
             src="/mekal_logo.png"
             alt="Mekal Enterprises"
             className="h-12 w-auto object-contain"
-            style={{ filter: "brightness(0) invert(1)" }}
           />
           <p className="text-sm leading-relaxed text-white/70">
             Premium custom printing solutions for businesses, events, and personal needs.

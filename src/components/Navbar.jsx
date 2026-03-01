@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import mekalLogo from "../assets/images/mekal-logo.jpg"
+
 
 // ── Hardcoded category data ───────────────────────────────────────────────────
 const NAV_CATEGORIES = [
@@ -206,7 +206,6 @@ export default function Navbar() {
           src="/mekal_logo.png"
           alt="Mekal Enterprises"
           className="h-12 w-auto object-contain"
-          style={{ filter: "brightness(0) invert(1)" }}
         />
         {/* Search */}
         <div className="hidden md:flex flex-1 max-w-xl mx-6">

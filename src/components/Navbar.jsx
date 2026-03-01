@@ -203,12 +203,11 @@ export default function Navbar() {
 
         {/* Logo */}
         <img
-          src={mekalLogo}
+          src="/mekal-logo.jpg"
           alt="Mekal Enterprises"
           className="h-12 w-auto object-contain"
           style={{ filter: "brightness(0) invert(1)" }}
         />
-
         {/* Search */}
         <div className="hidden md:flex flex-1 max-w-xl mx-6">
           <Input

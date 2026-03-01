@@ -30,7 +30,7 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <img
-            src="/mekal-logo.jpg"
+            src="/mekal_logo.png"
             alt="Mekal Enterprises"
             className="h-12 w-auto object-contain"
             style={{ filter: "brightness(0) invert(1)" }}

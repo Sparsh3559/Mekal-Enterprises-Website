@@ -22,8 +22,8 @@ function App() {
 
         {/* Client */}
         <Route path="/" element={<Home />} />
-        <Route path="/tshirt-printing" element={<Apparels />} />
-        <Route path="/mug-printing" element={<Drinkware />} />
+        <Route path="/apparels" element={<Apparels />} />
+        <Route path="/drinkware" element={<Drinkware />} />
         <Route path="/corporate-printing" element={<CorporatePrinting />} />
         <Route path="/banner-printing" element={<BannerPrinting />} />
 

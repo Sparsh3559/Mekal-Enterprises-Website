@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import mekalLogo from "../assets/images/mekal logo.jpg"
+import mekalLogo from "../assets/images/mekal-logo.jpg"
 
 // ── Hardcoded category data ───────────────────────────────────────────────────
 const NAV_CATEGORIES = [

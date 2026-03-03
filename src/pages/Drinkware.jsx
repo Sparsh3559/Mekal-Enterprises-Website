@@ -87,12 +87,9 @@ function ProductCard({ name, image, tag, productId }) {
             {tag}
           </span>
         )}
-        <div className="absolute bottom-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md">
-          <MessageCircle size={14} className="text-green-600" />
-        </div>
       </div>
       <p className="text-sm font-medium text-zinc-800 leading-snug">{name}</p>
-      <p className="text-xs text-zinc-400 mt-0.5">{productId ? "View details →" : "Tap to enquire"}</p>
+      <p className="text-xs text-zinc-400 mt-0.5">{productId ? "View details →" : "Coming soon"}</p>
     </>
   )
 
@@ -100,12 +97,7 @@ function ProductCard({ name, image, tag, productId }) {
     return <Link to={`/product/${productId}`} className="flex-shrink-0 w-56 group">{cardBody}</Link>
   }
 
-  return (
-    <div className="flex-shrink-0 w-56 group cursor-pointer"
-      onClick={() => openWhatsApp(`Hello, I'm interested in ${name}. Please share details and pricing.`)}>
-      {cardBody}
-    </div>
-  )
+  return <div className="flex-shrink-0 w-56 group">{cardBody}</div>
 }
 
 // ── Section ───────────────────────────────────────────────────────────────────

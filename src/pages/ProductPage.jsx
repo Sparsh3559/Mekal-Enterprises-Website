@@ -17,22 +17,25 @@ export default function ProductPage() {
   const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchProduct() {
       setLoading(true)
       setNotFound(false)
 
       const productName = slugToName(slug)
 
-      // Single query — fetch product by name (case-insensitive)
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("Products")
         .select("*, Categories(id, name)")
         .ilike("name", productName)
-        .eq("is_active", true)
         .limit(1)
         .single()
 
-      if (!data) { setNotFound(true); setLoading(false); return }
+      if (error || !data) {
+        console.error("Product fetch error:", error?.message, "| name searched:", productName)
+        setNotFound(true)
+        setLoading(false)
+        return
+      }
 
       setProduct(data)
 
@@ -41,14 +44,13 @@ export default function ProductPage() {
         .from("Products")
         .select("name, image_url, tag")
         .eq("category_id", data.category_id)
-        .eq("is_active", true)
         .neq("name", data.name)
         .limit(6)
 
       if (rel) setRelated(rel)
       setLoading(false)
     }
-    fetch()
+    fetchProduct()
   }, [slug])
 
   const openWhatsApp = () => {

@@ -4,16 +4,17 @@ import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import SideStrips from "../components/SideStrips"
 import { supabase } from "@/lib/supabase"
+import { nameToSlug } from "../lib/slugutils"
 import { MessageCircle, Loader2, ArrowLeft } from "lucide-react"
 
 const whatsappNumber = "919999999999"
 
 export default function CategoryPage() {
   const { id } = useParams()
-  const [category,          setCategory]          = useState(null)
-  const [subcategories,     setSubcategories]      = useState([])
-  const [productsBySubcat,  setProductsBySubcat]   = useState({})
-  const [loading,           setLoading]            = useState(true)
+  const [category,         setCategory]        = useState(null)
+  const [subcategories,    setSubcategories]    = useState([])
+  const [productsBySubcat, setProductsBySubcat] = useState({})
+  const [loading,          setLoading]          = useState(true)
 
   useEffect(() => {
     async function fetchData() {
@@ -34,7 +35,6 @@ export default function CategoryPage() {
         .from("Products")
         .select("id, name, image_url, tag, category_id, price")
         .in("category_id", catIds)
-        .eq("is_active", true)
         .order("created_at", { ascending: false })
 
       const grouped = {}
@@ -149,7 +149,8 @@ export default function CategoryPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {section.products.map((p) => (
                 <div key={p.id} className="group">
-                  <Link to={`/product/${p.id}`}>
+                  {/* ✅ Link by name slug, not by id */}
+                  <Link to={`/product/${nameToSlug(p.name)}`}>
                     <div className="relative rounded-2xl overflow-hidden bg-zinc-100 mb-3 aspect-[3/4]">
                       <img src={p.image_url || ""} alt={p.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />

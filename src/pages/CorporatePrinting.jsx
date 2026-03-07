@@ -1,70 +1,86 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import SideStrips from "../components/SideStrips"
 import { Button } from "@/components/ui/button"
+import { MessageCircle } from "lucide-react"
 
 export default function CorporatePrinting() {
   const number = "919999999999"
 
   const openWhatsApp = () => {
-    const msg =
-      "Hello, I want details about Corporate Printing services."
     window.open(
-      `https://wa.me/${number}?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${number}?text=${encodeURIComponent("Hello, I want details about Corporate Printing services.")}`,
       "_blank"
     )
   }
 
   return (
     <>
+      <SideStrips />
       <Navbar />
 
-      {/* HERO SECTION */}
+      {/* Hero */}
       <section className="relative w-full h-[55vh]">
         <img
           src="https://images.unsplash.com/photo-1581093588401-22d4a6d18a44?q=80&w=1400"
           alt="Corporate Printing"
           className="w-full h-full object-cover"
         />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50" />
-
-        {/* Title */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-semibold">
-            Corporate Printing
-          </h1>
-          <p className="text-white/80 mt-2">
-            Professional printing for businesses & organizations
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-20">
+          <p className="text-white/60 text-xs uppercase tracking-[0.25em] font-semibold mb-3">Mekal Enterprises</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">Corporate Printing</h1>
+          <p className="text-white/80 text-sm md:text-base max-w-md mb-8">
+            Professional printing for businesses & organizations.
           </p>
+          <button onClick={openWhatsApp}
+            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold text-sm px-6 py-3 rounded-full w-fit transition-colors">
+            <MessageCircle size={16} /> Get a Free Quote
+          </button>
         </div>
       </section>
 
-      {/* CONTENT SECTION */}
+      {/* Content */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <p className="text-lg text-zinc-700 leading-relaxed mb-8">
-          Professional printing solutions for companies, offices,
-          institutions, and corporate events. Ideal for branding,
-          employee merchandise, promotional campaigns, and bulk
-          requirements.
+          Professional printing solutions for companies, offices, institutions, and corporate events.
+          Ideal for branding, employee merchandise, promotional campaigns, and bulk requirements.
         </p>
 
-        {/* FEATURES */}
-        <ul className="grid gap-3 text-zinc-800 mb-10">
-          <li>✔ Company merchandise & uniforms</li>
-          <li>✔ Event branding materials</li>
-          <li>✔ Bulk printing at best prices</li>
-          <li>✔ Consistent professional quality</li>
-        </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+          {[
+            "Company merchandise & uniforms",
+            "Event branding materials",
+            "Bulk printing at best prices",
+            "Consistent professional quality",
+            "Fast turnaround — 5–7 days",
+            "Pan India delivery",
+          ].map(f => (
+            <div key={f} className="flex items-center gap-3 bg-zinc-50 rounded-xl px-4 py-3 text-sm text-zinc-700">
+              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#5fc7f4" }} />
+              {f}
+            </div>
+          ))}
+        </div>
 
-        {/* CTA */}
-        <Button
-          size="lg"
-          className="rounded-full bg-green-500 hover:bg-green-600"
-          onClick={openWhatsApp}
-        >
-          Get Quote on WhatsApp
+        <Button size="lg" className="rounded-full text-white font-semibold"
+          style={{ backgroundColor: "#065999" }} onClick={openWhatsApp}>
+          <MessageCircle size={16} className="mr-2" /> Get Quote on WhatsApp
         </Button>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-6 mb-16 rounded-3xl overflow-hidden" style={{ backgroundColor: "#065999" }}>
+        <div className="px-10 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-1">Need a corporate bulk order?</h3>
+            <p className="text-white/70 text-sm">Tell us your requirements — we respond within 2 hours.</p>
+          </div>
+          <button onClick={openWhatsApp}
+            className="flex-shrink-0 inline-flex items-center gap-2 bg-green-400 hover:bg-green-300 text-green-950 font-bold text-sm px-8 py-4 rounded-full transition-colors">
+            <MessageCircle size={16} /> Chat on WhatsApp
+          </button>
+        </div>
       </section>
 
       <Footer />

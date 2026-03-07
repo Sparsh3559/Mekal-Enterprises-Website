@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, MapPin } from "lucide-react"
-
+import mekalLogo from "../assets/images/mekal logo.jpg"
 
 export default function Footer() {
   const whatsappNumber = "919999999999" // replace with real number
 
   return (
-    <footer style={{ backgroundColor: "#065999" }} className="text-white relative">
+    <footer style={{ backgroundColor: "#5fc7f4" }} className="text-white relative">
 
       {/* ── Wave top edge ── */}
       <div className="w-full overflow-hidden leading-none -mt-1">
@@ -30,9 +30,10 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <img
-            src="/mekal_logo.png"
+            src={mekalLogo}
             alt="Mekal Enterprises"
-            className="h-12 w-auto object-contain"
+            className="h-16 w-auto object-contain mb-4"
+            style={{ filter: "brightness(0) invert(1)" }}
           />
           <p className="text-sm leading-relaxed text-white/70">
             Premium custom printing solutions for businesses, events, and personal needs.
@@ -42,7 +43,7 @@ export default function Footer() {
             {["in", "fb", "ig"].map((s) => (
               <div
                 key={s}
-                className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-[10px] font-bold text-white/60 hover:border-white hover:text-white cursor-pointer transition-colors"
+                className="w-8 h-8 rounded-full border border-[#065999]/30 flex items-center justify-center text-[10px] font-bold text-[#065999]/70 hover:border-[#065999] hover:text-[#065999] cursor-pointer transition-colors"
               >
                 {s}
               </div>
@@ -113,8 +114,8 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div className="border-t border-white/10 text-center text-xs text-white/40 py-5">
-        © {new Date().getFullYear()} Mekal Enterprises. All rights reserved.
+      <div className="border-t border-[#065999]/15 text-center text-xs text-[#065999]/60 py-5">
+        © {new Date().getFullYear()} Print Hub. All rights reserved.
       </div>
     </footer>
   )

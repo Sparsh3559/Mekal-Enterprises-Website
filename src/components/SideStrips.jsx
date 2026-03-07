@@ -4,18 +4,18 @@
 // even while scrolling through the white page content.
 
 export default function SideStrips() {
-    return (
-      <>
-        {/* Left strip */}
-        <div
-          className="fixed top-0 left-0 h-full w-3 z-40 pointer-events-none"
-          style={{ backgroundColor: "#065999" }}
-        />
-        {/* Right strip */}
-        <div
-          className="fixed top-0 right-0 h-full w-3 z-40 pointer-events-none"
-          style={{ backgroundColor: "#065999" }}
-        />
-      </>
-    )
-  }
+  return (
+    <>
+      {/* Left strip */}
+      <div
+        className="fixed top-0 left-0 h-full w-3 z-40 pointer-events-none"
+        style={{ backgroundColor: "#5fc7f4" }}
+      />
+      {/* Right strip */}
+      <div
+        className="fixed top-0 right-0 h-full w-3 z-40 pointer-events-none"
+        style={{ backgroundColor: "#5fc7f4" }}
+      />
+    </>
+  )
+}

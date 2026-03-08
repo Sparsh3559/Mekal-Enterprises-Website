@@ -5,6 +5,8 @@ import CorporatePrinting   from "./pages/CorporatePrinting";
 import BannerPrinting      from "./pages/BannerPrinting";
 import ProductPage         from "./pages/ProductPage";
 import CategoryLandingPage from "./pages/CategoryLandingPage";
+import CorporateGiftings   from "./pages/CorporateGiftings";
+import WomensGifting       from "./pages/WomensGifting";
 
 import LoginPage           from "./pages/admin/login/LoginPage";
 import AuthGuard           from "./components/AuthGuard";
@@ -37,6 +39,8 @@ function App() {
         <Route path="/visiting-cards"     element={<CategoryLandingPage fixedName="Visiting Cards & ID Cards" />} />
         <Route path="/stationery"         element={<CategoryLandingPage fixedName="Stationery, Letterheads & Notebooks" />} />
         <Route path="/labels-stickers"    element={<CategoryLandingPage fixedName="Labels, Stickers & Carry Bags" />} />
+        <Route path="/corporate-giftings" element={<CorporateGiftings />} />
+        <Route path="/womens-gifting"     element={<WomensGifting />} />
 
         {/* ── Admin login (public) ── */}
         <Route path="/admin/login" element={<LoginPage />} />

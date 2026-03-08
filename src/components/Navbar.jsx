@@ -193,7 +193,7 @@ export default function Navbar() {
         </Sheet>
 
         {/* Logo */}
-        <Link to="/"><img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-12 w-auto object-contain" /></Link>
+        <Link to="/"><img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-20 w-auto object-contain" /></Link>
 
         {/* ── Live Search ── */}
         <div ref={searchRef} className="hidden md:flex flex-1 max-w-xl mx-6 relative">

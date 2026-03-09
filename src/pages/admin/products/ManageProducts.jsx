@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import AdminLayout from "../../../components/AdminLayout"
+import AdminLayout from "@/components/AdminLayout"
 import { supabase } from "@/lib/supabase"
 import { Trash2, Search, Loader2, Pencil, X, Check, Upload } from "lucide-react"
 
@@ -76,10 +76,10 @@ export default function ManageProducts() {
     const ext  = file.name.split(".").pop()
     const path = `products/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
     const { error } = await supabase.storage
-      .from("product-images")
+      .from("products")
       .upload(path, file, { cacheControl: "3600" })
     if (error) throw new Error(error.message)
-    return supabase.storage.from("product-images").getPublicUrl(path).data.publicUrl
+    return supabase.storage.from("products").getPublicUrl(path).data.publicUrl
   }
 
   async function saveEdit(id) {

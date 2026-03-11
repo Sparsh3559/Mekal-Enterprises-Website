@@ -18,70 +18,21 @@ export default function ProductPage() {
 
   useEffect(() => {
     async function fetchProduct() {
-      setLoading(true)
-      setNotFound(false)
-
-      // Try new slug format first (~ encodes original hyphens)
+      setLoading(true); setNotFound(false)
       const productName = slugToName(slug)
-
       const { data, error } = await supabase
-        .from("Products")
-        .select("*, Categories(id, name)")
-        .ilike("name", productName)
-        .limit(1)
-        .single()
+        .from("Products").select("*, Categories(id, name)")
+        .ilike("name", productName).limit(1).single()
 
-      if (!error && data) {
-        // ✅ Found with new slug format
-        await fetchRelated(data)
-        return
-      }
-
-      // ⚠️ Fallback: try legacy slug format (all hyphens → spaces, no ~ encoding)
-      // This handles old URLs like /product/Polyester-Round-Neck-T-Shirt
-      const legacyName = decodeURIComponent(slug).replace(/-/g, " ")
-
-      console.warn(
-        "New slug lookup failed, trying legacy format:",
-        { tried: productName, fallback: legacyName, error: error?.message }
-      )
-
-      const { data: fallback, error: err2 } = await supabase
-        .from("Products")
-        .select("*, Categories(id, name)")
-        .ilike("name", legacyName)
-        .limit(1)
-        .single()
-
-      if (!err2 && fallback) {
-        // ✅ Found with legacy slug format
-        await fetchRelated(fallback)
-        return
-      }
-
-      // ❌ Not found with either format
-      console.error(
-        "Product not found with either slug format:",
-        { newName: productName, legacyName, error: err2?.message }
-      )
-      setNotFound(true)
-      setLoading(false)
-    }
-
-    async function fetchRelated(productData) {
-      setProduct(productData)
+      if (error || !data) { setNotFound(true); setLoading(false); return }
+      setProduct(data)
 
       const { data: rel } = await supabase
-        .from("Products")
-        .select("name, image_url, tag")
-        .eq("category_id", productData.category_id)
-        .neq("name", productData.name)
-        .limit(6)
-
+        .from("Products").select("name, image_url, tag")
+        .eq("category_id", data.category_id).neq("name", data.name).limit(6)
       if (rel) setRelated(rel)
       setLoading(false)
     }
-
     fetchProduct()
   }, [slug])
 
@@ -115,31 +66,30 @@ export default function ProductPage() {
       <Navbar />
 
       {/* Breadcrumb */}
-      <div className="bg-zinc-50 border-b px-6 py-3 text-xs text-zinc-400">
+      <div className="bg-zinc-50 border-b px-4 md:px-6 py-2.5 text-xs text-zinc-400">
         <div className="max-w-7xl mx-auto flex items-center gap-2 flex-wrap">
           <Link to="/" className="hover:text-zinc-700">Home</Link>
           <span>/</span>
           {product.Categories && (
             <>
-              <Link to={`/category/${product.Categories.id}`} className="hover:text-zinc-700">
+              <Link to={`/category/${product.Categories.id}`} className="hover:text-zinc-700 truncate max-w-[120px]">
                 {product.Categories.name}
               </Link>
               <span>/</span>
             </>
           )}
-          <span className="text-zinc-700 font-medium">{product.name}</span>
+          <span className="text-zinc-700 font-medium truncate max-w-[140px]">{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12">
         <Link
           to={product.Categories ? `/category/${product.Categories.id}` : "/"}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-900 mb-8 transition-colors"
-        >
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-900 mb-5 md:mb-8 transition-colors">
           <ArrowLeft size={15} /> Back
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-start">
 
           {/* Image */}
           <div className="rounded-2xl overflow-hidden bg-zinc-100 aspect-square relative">
@@ -149,35 +99,34 @@ export default function ProductPage() {
               className="w-full h-full object-cover"
             />
             {product.tag && (
-              <span className="absolute top-4 left-4 text-[10px] font-bold uppercase tracking-wider bg-white text-zinc-800 px-3 py-1 rounded-full shadow-sm">
+              <span className="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider bg-white text-zinc-800 px-3 py-1 rounded-full shadow-sm">
                 {product.tag}
               </span>
             )}
           </div>
 
           {/* Info */}
-          <div className="sticky top-28">
+          <div className="md:sticky md:top-24">
             {product.Categories && (
               <Link
                 to={`/category/${product.Categories.id}`}
-                className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 hover:text-[#065999] transition-colors mb-3 block"
-              >
+                className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 hover:text-[#065999] transition-colors mb-2 md:mb-3 block">
                 {product.Categories.name}
               </Link>
             )}
 
-            <h1 className="text-3xl font-bold text-zinc-900 leading-tight mb-4">{product.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 leading-tight mb-3 md:mb-4">{product.name}</h1>
 
             {product.price && (
-              <p className="text-2xl font-bold text-[#065999] mb-4">₹{product.price}</p>
+              <p className="text-xl md:text-2xl font-bold text-[#065999] mb-3 md:mb-4">₹{product.price}</p>
             )}
 
             {product.description && (
-              <p className="text-zinc-500 text-sm leading-relaxed mb-6">{product.description}</p>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-5 md:mb-6">{product.description}</p>
             )}
 
-            <div className="space-y-2 mb-8">
-              {["Custom logo & name printing", "Order as low as single quantity", "Fast turnaround — 5–7 days", "Pan India delivery"].map((f) => (
+            <div className="space-y-2 mb-6 md:mb-8">
+              {["Custom logo & name printing", "Order as low as single quantity", "Fast turnaround — 5–7 days", "Pan India delivery"].map(f => (
                 <div key={f} className="flex items-center gap-2 text-sm text-zinc-600">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 flex-shrink-0" />
                   {f}
@@ -195,21 +144,21 @@ export default function ProductPage() {
 
         {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-xl font-bold text-zinc-900 mb-6">More in this category</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {related.map((r) => (
+          <div className="mt-12 md:mt-20">
+            <h2 className="text-lg md:text-xl font-bold text-zinc-900 mb-4 md:mb-6">More in this category</h2>
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+              {related.map(r => (
                 <Link key={r.name} to={`/product/${nameToSlug(r.name)}`} className="group">
                   <div className="relative rounded-xl overflow-hidden bg-zinc-100 mb-2 aspect-square">
                     <img src={r.image_url || ""} alt={r.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     {r.tag && (
-                      <span className="absolute top-2 left-2 text-[9px] font-bold uppercase bg-white text-zinc-700 px-2 py-0.5 rounded-full">
+                      <span className="absolute top-1.5 left-1.5 text-[8px] md:text-[9px] font-bold uppercase bg-white text-zinc-700 px-1.5 py-0.5 rounded-full">
                         {r.tag}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs font-medium text-zinc-800 line-clamp-2 leading-snug">{r.name}</p>
+                  <p className="text-[10px] md:text-xs font-medium text-zinc-800 line-clamp-2 leading-snug">{r.name}</p>
                 </Link>
               ))}
             </div>

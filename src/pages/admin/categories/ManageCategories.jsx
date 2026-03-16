@@ -32,6 +32,7 @@ export default function ManageCategories() {
   const [editingId,   setEditingId]   = useState(null)
   const [editTable,   setEditTable]   = useState(null) // "Categories" | "Subcategories" | "Items"
   const [editName,    setEditName]    = useState("")
+  const [editBadge,   setEditBadge]   = useState("")
   const [savingEdit,  setSavingEdit]  = useState(false)
   const [deletingKey, setDeletingKey] = useState(null)
 
@@ -109,18 +110,22 @@ export default function ManageCategories() {
   }
 
   // ── Rename ────────────────────────────────────────────────────────────────
-  function startEdit(id, name, table) {
-    setEditingId(id); setEditName(name); setEditTable(table)
+  function startEdit(id, name, table, badge = "") {
+    setEditingId(id); setEditName(name); setEditTable(table); setEditBadge(badge || "")
   }
   async function saveEdit() {
     if (!editName.trim()) return
     setSavingEdit(true)
-    const { error } = await supabase.from(editTable).update({ name: editName.trim() }).eq("id", editingId)
+    const updates = { name: editName.trim() }
+    if (editTable === "Subcategories" || editTable === "Items") {
+      updates.badge = editBadge || null
+    }
+    const { error } = await supabase.from(editTable).update(updates).eq("id", editingId)
     if (error) alert(error.message)
     else { setEditingId(null); setEditTable(null) }
     setSavingEdit(false)
   }
-  function cancelEdit() { setEditingId(null); setEditTable(null); setEditName("") }
+  function cancelEdit() { setEditingId(null); setEditTable(null); setEditName(""); setEditBadge("") }
 
   // ── Delete ────────────────────────────────────────────────────────────────
   async function deleteRow(id, name, table, key) {
@@ -136,15 +141,23 @@ export default function ManageCategories() {
     setDeletingKey(null)
   }
 
+  // ── Badge select helper ───────────────────────────────────────────────────
+  const BADGES = ["", "New", "Hot", "Popular", "Offer", "Best Seller", "Trending"]
+  const BADGE_COLORS = { "New": "bg-blue-500", "Hot": "bg-red-500", "Popular": "bg-purple-500", "Offer": "bg-green-500", "Best Seller": "bg-amber-500", "Trending": "bg-pink-500" }
+
   // ── Item chip ─────────────────────────────────────────────────────────────
   function ItemChip({ item }) {
     const isEditing = editingId === item.id && editTable === "Items"
     const key = `item-${item.id}`
     if (isEditing) return (
-      <div className="flex items-center gap-1 bg-background border rounded-full px-3 py-1">
+      <div className="flex items-center gap-1.5 bg-background border rounded-full px-3 py-1 shadow-sm">
         <input ref={editRef} value={editName} onChange={e => setEditName(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter") saveEdit(); if (e.key === "Escape") cancelEdit() }}
-          className="text-sm outline-none w-36 bg-transparent" />
+          className="text-sm outline-none w-32 bg-transparent" />
+        <select value={editBadge} onChange={e => setEditBadge(e.target.value)}
+          className="text-[10px] outline-none border rounded-full px-1.5 py-0.5 bg-white text-zinc-600 cursor-pointer">
+          {BADGES.map(b => <option key={b} value={b}>{b || "No badge"}</option>)}
+        </select>
         <button onClick={saveEdit} className="text-green-600">
           {savingEdit ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
         </button>
@@ -156,7 +169,12 @@ export default function ManageCategories() {
         <Link to={`/product/${nameToSlug(item.name)}`} className="hover:text-[#065999] transition-colors">
           {item.name}
         </Link>
-        <button onClick={() => startEdit(item.id, item.name, "Items")}
+        {item.badge && (
+          <span className={`text-[9px] font-bold text-white px-1.5 py-0.5 rounded-full ${BADGE_COLORS[item.badge] || "bg-zinc-500"}`}>
+            {item.badge}
+          </span>
+        )}
+        <button onClick={() => startEdit(item.id, item.name, "Items", item.badge)}
           className="ml-1 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
           <Pencil size={10} />
         </button>
@@ -340,21 +358,32 @@ export default function ManageCategories() {
                             </button>
 
                             {editingSub ? (
-                              <div className="flex items-center gap-2 flex-1">
+                              <div className="flex items-center gap-2 flex-1 flex-wrap">
                                 <Input ref={editRef} value={editName} onChange={e => setEditName(e.target.value)}
                                   onKeyDown={e => { if (e.key === "Enter") saveEdit(); if (e.key === "Escape") cancelEdit() }}
                                   className="h-7 text-sm max-w-xs" />
+                                <select value={editBadge} onChange={e => setEditBadge(e.target.value)}
+                                  className="h-7 text-xs border rounded-lg px-2 bg-white text-zinc-600 focus:outline-none cursor-pointer">
+                                  {["", "New", "Hot", "Popular", "Offer", "Best Seller", "Trending"].map(b =>
+                                    <option key={b} value={b}>{b || "No badge"}</option>
+                                  )}
+                                </select>
                                 <button onClick={saveEdit} className="text-green-600">
                                   {savingEdit ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
                                 </button>
                                 <button onClick={cancelEdit} className="text-muted-foreground"><X size={13} /></button>
                               </div>
                             ) : (
-                              <div className="flex-1 flex items-center gap-2">
+                              <div className="flex-1 flex items-center gap-2 flex-wrap">
                                 <Link to={`/category/${sub.id}`}
                                   className="text-sm font-semibold text-zinc-700 hover:text-[#065999] transition-colors">
                                   {sub.name}
                                 </Link>
+                                {sub.badge && (
+                                  <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded-full ${{ "New": "bg-blue-500", "Hot": "bg-red-500", "Popular": "bg-purple-500", "Offer": "bg-green-500", "Best Seller": "bg-amber-500", "Trending": "bg-pink-500" }[sub.badge] || "bg-zinc-500"}`}>
+                                    {sub.badge}
+                                  </span>
+                                )}
                                 <span className="text-xs text-muted-foreground px-2 py-0.5 bg-blue-50 rounded-full">
                                   Subcategory · {subItems.length} items
                                 </span>
@@ -364,7 +393,7 @@ export default function ManageCategories() {
                             {!editingSub && (
                               <div className="flex items-center gap-0.5">
                                 <Button variant="ghost" size="icon" className="h-7 w-7"
-                                  onClick={() => startEdit(sub.id, sub.name, "Subcategories")}>
+                                  onClick={() => startEdit(sub.id, sub.name, "Subcategories", sub.badge)}>
                                   <Pencil size={12} />
                                 </Button>
                                 <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive"

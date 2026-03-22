@@ -85,28 +85,28 @@ export default function Footer() {
   ]
 
   const customerSupport = [
-    { label: "Help Desk",               to: "/" },
-    { label: "Privacy Policy",          to: "/" },
-    { label: "Return & Shipping Policy",to: "/" },
-    { label: "Terms & Conditions",      to: "/" },
-    { label: "Payment",                 to: "/" },
-    { label: "Contact Us",              to: "/" },
-    { label: "FAQs",                    to: "/" },
+    { label: "Help Desk",                to: "/" },
+    { label: "Privacy Policy",           to: "/" },
+    { label: "Return & Shipping Policy", to: "/" },
+    { label: "Terms & Conditions",       to: "/" },
+    { label: "Payment",                  to: "/" },
+    { label: "Contact Us",               to: "/" },
+    { label: "FAQs",                     to: "/" },
   ]
 
   const companyInfo = [
-    { label: "About Us",                to: "/" },
-    { label: "Working with Printstop",  to: "/" },
-    { label: "Mekal Blog",              to: "/" },
-    { label: "Privacy Policy",          to: "/" },
+    { label: "About Us",               to: "/" },
+    { label: "Working with Printstop", to: "/" },
+    { label: "Mekal Blog",             to: "/" },
+    { label: "Privacy Policy",         to: "/" },
   ]
 
   const socials = [
-    { icon: <Instagram size={16} />,  href: "#", label: "Instagram" },
-    { icon: <Facebook  size={16} />,  href: "#", label: "Facebook"  },
-    { icon: <Twitter   size={16} />,  href: "#", label: "X / Twitter" },
-    { icon: <Youtube   size={16} />,  href: "#", label: "YouTube"   },
-    { icon: <Linkedin  size={16} />,  href: "#", label: "LinkedIn"  },
+    { icon: <Instagram size={16} />, href: "#", label: "Instagram"   },
+    { icon: <Facebook  size={16} />, href: "#", label: "Facebook"    },
+    { icon: <Twitter   size={16} />, href: "#", label: "X / Twitter" },
+    { icon: <Youtube   size={16} />, href: "#", label: "YouTube"     },
+    { icon: <Linkedin  size={16} />, href: "#", label: "LinkedIn"    },
   ]
 
   return (
@@ -128,8 +128,7 @@ export default function Footer() {
           <img
             src="/mekal_logo.png"
             alt="Mekal Enterprises"
-            className="h-14 md:h-18 w-auto object-contain mx-auto mb-4"
-            style={{ filter: "brightness(0) invert(1)" }}
+            className="h-14 w-auto object-contain mx-auto mb-4"
           />
           <p className="text-sm md:text-base text-white font-medium max-w-2xl mx-auto mb-4 leading-relaxed">
             We are the best Gifting Solutions Company in India.&nbsp;

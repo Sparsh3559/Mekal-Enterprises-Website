@@ -5,7 +5,7 @@ import Hero from "../components/Hero"
 import WhatsAppButton from "../components/WhatsAppButton"
 import Footer from "../components/Footer"
 import Trustbar from "../components/Trustbar"
-import PromoSection from "../components/PromoSection"
+import Promosection from "../components/Promosection"
 import HowWeWork from "../components/HowWeWork"
 import Testimonials from "../components/Testimonials"
 import SideStrips from "../components/SideStrips"
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* ── Corporate Gifting Promo ONLY ── */}
-      <PromoSection
+      <Promosection
         tag="Corporate Solutions"
         heading="Corporate Gifting for Every Occasion"
         description="Build lasting impressions with premium branded merchandise. From onboarding kits to festive hampers — crafted for teams of all sizes. Order in bulk or single pieces."

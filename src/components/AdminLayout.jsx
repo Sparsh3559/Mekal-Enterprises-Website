@@ -6,8 +6,8 @@ import {
 } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 
-const BRAND   = "#5fc7f4"
-const DARK    = "#065999"
+const BRAND   = "#065999"
+const DARK    = "#5fc7f4"
 
 const navItems = [
   { to: "/admin",             label: "Dashboard",       icon: LayoutDashboard },

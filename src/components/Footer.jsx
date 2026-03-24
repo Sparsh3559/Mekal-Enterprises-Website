@@ -128,7 +128,7 @@ export default function Footer() {
           <img
             src="/mekal_logo.png"
             alt="Mekal Enterprises"
-            className="h-14 w-auto object-contain mx-auto mb-4"
+            className="h-20 md:h-24 w-auto object-contain mx-auto mb-4"
           />
           <p className="text-sm md:text-base text-white font-medium max-w-2xl mx-auto mb-4 leading-relaxed">
             We are the best Gifting Solutions Company in India.&nbsp;

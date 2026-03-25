@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase"
 import { nameToSlug, slugToName } from "../lib/slugutils"
 import { MessageCircle, ArrowLeft, Loader2, ChevronLeft, ChevronRight } from "lucide-react"
 
-const whatsappNumber = "919999999999"
+const whatsappNumber = "919131387559"
 
 export default function ProductPage() {
   const { slug } = useParams()

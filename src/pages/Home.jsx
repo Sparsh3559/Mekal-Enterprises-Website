@@ -262,12 +262,12 @@ export default function Home() {
         description="Build lasting impressions with premium branded merchandise. From onboarding kits to festive hampers — crafted for teams of all sizes. Order in bulk or single pieces."
         ctaText="Explore Corporate Gifts"
         ctaPath="/corporate-giftings"
-        heroImage="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200"
+        heroImage="https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/akjkgakjgaf.jpg"
         tiles={[
-          { label: "Branded Merchandise",    image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=800", path: "/corporate-giftings" },
-          { label: "Office Stationery Kits", image: "https://images.unsplash.com/photo-1586769852044-692d6e3703f0?q=80&w=800", path: "/corporate-giftings" },
-          { label: "Custom Drinkware",       image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=800", path: "/corporate-giftings" },
-          { label: "Festive Hampers",        image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=800", path: "/corporate-giftings" },
+          { label: "Branded Merchandise",    image: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/1.jpg", path: "/corporate-giftings" },
+          { label: "Office Stationery Kits", image: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/2.jpg", path: "/corporate-giftings" },
+          { label: "Custom Drinkware",       image: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/3.jpg", path: "/corporate-giftings" },
+          { label: "Festive Hampers",        image: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/4.jpg", path: "/corporate-giftings" },
         ]}
       />
 

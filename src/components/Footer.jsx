@@ -58,7 +58,7 @@ function LocationSection() {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Mekal Enterprises Location – Indore"
+                title="Mekal Enterprises Location – Dewas"
               />
             </div>
           </div>
@@ -85,28 +85,28 @@ export default function Footer() {
   ]
 
   const customerSupport = [
-    { label: "Help Desk",                to: "/" },
-    { label: "Privacy Policy",           to: "/" },
+    { label: "Help Desk", to: "/" },
+    { label: "Privacy Policy", to: "/" },
     { label: "Return & Shipping Policy", to: "/" },
-    { label: "Terms & Conditions",       to: "/" },
-    { label: "Payment",                  to: "/" },
-    { label: "Contact Us",               to: "/" },
-    { label: "FAQs",                     to: "/" },
+    { label: "Terms & Conditions", to: "/" },
+    { label: "Payment", to: "/" },
+    { label: "Contact Us", to: "/" },
+    { label: "FAQs", to: "/" },
   ]
 
   const companyInfo = [
-    { label: "About Us",               to: "/" },
-    { label: "Working with Printstop", to: "/" },
-    { label: "Mekal Blog",             to: "/" },
-    { label: "Privacy Policy",         to: "/" },
+    { label: "About Us", to: "/" },
+    { label: "Working with Mekal", to: "/" },
+    { label: "Mekal Blog", to: "/" },
+    { label: "Privacy Policy", to: "/" },
   ]
 
   const socials = [
-    { icon: <Instagram size={16} />, href: "#", label: "Instagram"   },
-    { icon: <Facebook  size={16} />, href: "#", label: "Facebook"    },
-    { icon: <Twitter   size={16} />, href: "#", label: "X / Twitter" },
-    { icon: <Youtube   size={16} />, href: "#", label: "YouTube"     },
-    { icon: <Linkedin  size={16} />, href: "#", label: "LinkedIn"    },
+    { icon: <Instagram size={16} />, href: "#", label: "Instagram" },
+    { icon: <Facebook size={16} />, href: "#", label: "Facebook" },
+    { icon: <Twitter size={16} />, href: "#", label: "X / Twitter" },
+    { icon: <Youtube size={16} />, href: "#", label: "YouTube" },
+    { icon: <Linkedin size={16} />, href: "#", label: "LinkedIn" },
   ]
 
   return (
@@ -125,30 +125,57 @@ export default function Footer() {
 
         {/* ── Logo + tagline + contact bar ── */}
         <div className="text-center py-8 border-b border-white/20 px-4">
-          <img
-            src="/mekal_logo.png"
-            alt="Mekal Enterprises"
-            className="h-20 md:h-24 w-auto object-contain mx-auto mb-4"
-          />
+
+          {/* Logo + Waves */}
+          <div className="flex items-center justify-center gap-4 mb-4">
+
+            {/* LEFT WAVE */}
+            <img
+              src="/wave.png"
+              alt="wave left"
+              className="h-20 md:h-24 object-contain opacity-80"
+            />
+
+            {/* LOGO (CENTER BIGGER) */}
+            <img
+              src="/mekal_logo.png"
+              alt="Mekal Enterprises"
+              className="h-24 md:h-28 lg:h-32 object-contain"
+            />
+
+            {/* RIGHT WAVE (MIRROR) */}
+            <img
+              src="/wave.png"
+              alt="wave right"
+              className="h-20 md:h-24 object-contain opacity-80 scale-x-[-1]"
+            />
+
+          </div>
+
+          {/* TEXT */}
           <p className="text-sm md:text-base text-white font-medium max-w-2xl mx-auto mb-4 leading-relaxed">
             We are the best Gifting Solutions Company in India.&nbsp;
             We have a wide range of products for any budget provided to us.
           </p>
+
+          {/* CONTACT */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm text-white/80">
-            <a href="tel:+919999999999"
+            <a href="tel:+919131387559"
               className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone size={14} className="flex-shrink-0" />
-              +91 99999 99999&nbsp;&nbsp;|&nbsp;&nbsp;+91 99999 99999
+              <Phone size={14} />
+              +91 9131387559
             </a>
+
             <span className="hidden sm:block text-white/30">•</span>
+
             <a href="mailto:mekal.enterprises@gmail.com"
               className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={14} className="flex-shrink-0" />
+              <Mail size={14} />
               mekal.enterprises@gmail.com
             </a>
           </div>
-        </div>
 
+        </div>
         {/* ── Three-column links + socials ── */}
         <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">

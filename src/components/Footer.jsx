@@ -1,41 +1,17 @@
 import { Link } from "react-router-dom"
 import { Phone, Mail, Instagram, Facebook, Linkedin, Youtube, Twitter } from "lucide-react"
 
-// ── Inline SVG wave — no image file needed ────────────────────────────────────
+// ── Wave image from client ────────────────────────────────────────────────────
+const WAVE_URL = "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/wave%20(1)-Photoroom.png"
+
 function Wave({ flip = false }) {
   return (
-    <svg
-      viewBox="0 0 80 120"
-      className="h-20 md:h-24 w-auto opacity-70"
+    <img
+      src={WAVE_URL}
+      alt=""
+      className="h-20 md:h-24 w-auto object-contain opacity-90"
       style={{ transform: flip ? "scaleX(-1)" : "none" }}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-    >
-      <path
-        d="M40 5 C55 20, 70 35, 55 55 C40 75, 20 80, 30 100 C38 115, 50 118, 40 118"
-        stroke="white"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.9"
-      />
-      <path
-        d="M55 10 C68 28, 75 48, 60 65 C45 82, 28 85, 38 105 C44 118, 56 120, 50 120"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.5"
-      />
-      <path
-        d="M25 8 C38 25, 48 42, 35 60 C22 78, 10 82, 20 100 C27 113, 38 116, 30 118"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.35"
-      />
-    </svg>
+    />
   )
 }
 

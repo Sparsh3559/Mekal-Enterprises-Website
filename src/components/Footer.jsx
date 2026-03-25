@@ -68,15 +68,24 @@ export default function Footer() {
       {/* ── Logo + waves + contact ── */}
       <div className="text-center py-8 border-b border-white/20 px-4">
 
-        {/* Logo flanked by decorative waves */}
-        <div className="flex items-center justify-center gap-4 md:gap-6 mb-4">
-          <Wave />
+        {/* Logo flanked by decorative waves — tight, looks like one unit */}
+        <div className="flex items-center justify-center mb-4">
+          <img
+            src={WAVE_URL}
+            alt=""
+            className="h-24 md:h-28 lg:h-32 w-auto object-contain opacity-90 -mr-3"
+          />
           <img
             src="/mekal_logo.png"
             alt="Mekal Enterprises"
-            className="h-24 md:h-28 lg:h-32 w-auto object-contain"
+            className="h-24 md:h-28 lg:h-32 w-auto object-contain relative z-10"
           />
-          <Wave flip />
+          <img
+            src={WAVE_URL}
+            alt=""
+            className="h-24 md:h-28 lg:h-32 w-auto object-contain opacity-90 -ml-3"
+            style={{ transform: "scaleX(-1)" }}
+          />
         </div>
 
         <p className="text-sm md:text-base text-white font-medium max-w-2xl mx-auto mb-4 leading-relaxed">

@@ -88,11 +88,11 @@ function Wave({ flip = false }) {
 
 export default function Footer() {
   const allProducts = [
-    { label: "Custom Apparel",                       to: "/apparels" },
-    { label: "Custom Drinkware",                     to: "/drinkware" },
+    { label: "Custom Apparel",                       to: "/category/16" },
+    { label: "Custom Drinkware",                     to: "/category/17" },
     { label: "Stationery, Letterheads & Notebooks",  to: "/stationery" },
     { label: "Stamps and Ink",                       to: "/stationery" },
-    { label: "Signs, Posters & Marketing Materials", to: "/" },
+    { label: "Signs, Posters & Marketing Materials", to: "/category/42" },
     { label: "Corporate Gifts",                      to: "/corporate-giftings" },
     { label: "Custom Package Water Bottle",          to: "/drinkware" },
     { label: "Custom Bags",                          to: "/labels-stickers" },

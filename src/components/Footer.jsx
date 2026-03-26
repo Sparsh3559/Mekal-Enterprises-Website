@@ -75,8 +75,8 @@ function LocationSection() {
 // ── Wave image from client ────────────────────────────────────────────────────
 const WAVE_URL = "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/wave%20(1)-Photoroom.png"
 
-// Logo blue from the Mekal logo: #1a5fa8 (the deep navy-blue in the wave marks)
-const LOGO_BLUE = "#1a5fa8"
+// Original footer background — unchanged
+const LOGO_BLUE = "#5fc7f4"
 
 export default function Footer() {
   const allProducts = [
@@ -117,8 +117,8 @@ export default function Footer() {
     <>
       <LocationSection />
 
-      {/* Footer background now uses the logo's deep navy-blue */}
-      <footer style={{ backgroundColor: LOGO_BLUE }} className="text-white relative">
+      {/* Footer background — original sky blue, unchanged */}
+      <footer style={{ backgroundColor: "#5fc7f4" }} className="text-white relative">
 
       {/* ── Wave divider — fill matches new footer background ── */}
       <div className="w-full overflow-hidden leading-none -mt-1">
@@ -151,29 +151,29 @@ export default function Footer() {
           />
         </div>
 
-        {/* ── Navy text: changed from text-white to navy (#0d1b3e) via inline style ── */}
+        {/* ── Navy text: changed from text-white to navy (#1a5fa8) via inline style ── */}
         <p className="text-sm md:text-base font-medium max-w-2xl mx-auto mb-4 leading-relaxed"
-           style={{ color: "#0d1b3e" }}>
+           style={{ color: "#1a5fa8" }}>
           We are the best Gifting Solutions Company in India.&nbsp;
           We have a wide range of products for any budget provided to us.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm"
-             style={{ color: "rgba(13,27,62,0.75)" }}>
+             style={{ color: "rgba(26,95,168,0.85)" }}>
           <a href="tel:+919131387559"
             className="flex items-center gap-2 transition-colors"
             style={{ color: "inherit" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#0d1b3e"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(13,27,62,0.75)"}>
+            onMouseEnter={e => e.currentTarget.style.color = "#1a5fa8"}
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(26,95,168,0.85)"}>
             <Phone size={14} className="flex-shrink-0" />
             +91 9131387559
           </a>
-          <span style={{ color: "rgba(13,27,62,0.3)" }} className="hidden sm:block">•</span>
+          <span style={{ color: "rgba(26,95,168,0.4)" }} className="hidden sm:block">•</span>
           <a href="mailto:mekal.enterprises@gmail.com"
             className="flex items-center gap-2 transition-colors"
             style={{ color: "inherit" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#0d1b3e"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(13,27,62,0.75)"}>
+            onMouseEnter={e => e.currentTarget.style.color = "#1a5fa8"}
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(26,95,168,0.85)"}>
             <Mail size={14} className="flex-shrink-0" />
             mekal.enterprises@gmail.com
           </a>
@@ -187,10 +187,10 @@ export default function Footer() {
           {/* All Products */}
           <div>
             <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest"
-                style={{ color: "#0d1b3e" }}>
+                style={{ color: "#1a5fa8" }}>
               All Products
             </h4>
-            <ul className="space-y-2.5 text-sm" style={{ color: "rgba(13,27,62,0.75)" }}>
+            <ul className="space-y-2.5 text-sm" style={{ color: "rgba(26,95,168,0.85)" }}>
               {allProducts.map(item => (
                 <li key={item.label}>
                   <Link to={item.to} className="transition-colors hover:opacity-100"
@@ -205,10 +205,10 @@ export default function Footer() {
           {/* Customer Support */}
           <div>
             <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest"
-                style={{ color: "#0d1b3e" }}>
+                style={{ color: "#1a5fa8" }}>
               Customer Support
             </h4>
-            <ul className="space-y-2.5 text-sm" style={{ color: "rgba(13,27,62,0.75)" }}>
+            <ul className="space-y-2.5 text-sm" style={{ color: "rgba(26,95,168,0.85)" }}>
               {customerSupport.map(item => (
                 <li key={item.label}>
                   <Link to={item.to} className="transition-colors"
@@ -223,10 +223,10 @@ export default function Footer() {
           {/* Company Info + Socials */}
           <div>
             <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest"
-                style={{ color: "#0d1b3e" }}>
+                style={{ color: "#1a5fa8" }}>
               Company Info
             </h4>
-            <ul className="space-y-2.5 text-sm mb-8" style={{ color: "rgba(13,27,62,0.75)" }}>
+            <ul className="space-y-2.5 text-sm mb-8" style={{ color: "rgba(26,95,168,0.85)" }}>
               {companyInfo.map(item => (
                 <li key={item.label}>
                   <Link to={item.to} className="transition-colors"
@@ -244,10 +244,10 @@ export default function Footer() {
                   target="_blank" rel="noreferrer"
                   className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
                   style={{
-                    border: "1px solid rgba(13,27,62,0.35)",
-                    color: "#0d1b3e",
+                    border: "1px solid rgba(26,95,168,0.4)",
+                    color: "#1a5fa8",
                   }}
-                  onMouseEnter={e => e.currentTarget.style.backgroundColor = "rgba(13,27,62,0.15)"}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = "rgba(26,95,168,0.15)"}
                   onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}>
                   {s.icon}
                 </a>
@@ -260,7 +260,7 @@ export default function Footer() {
 
       {/* ── Bottom bar ── */}
       <div className="border-t text-center text-xs py-4 px-4"
-           style={{ borderColor: "rgba(13,27,62,0.2)", color: "rgba(13,27,62,0.5)" }}>
+           style={{ borderColor: "rgba(26,95,168,0.25)", color: "rgba(26,95,168,0.6)" }}>
         © {new Date().getFullYear()} Mekal Enterprises. All rights reserved.
       </div>
 

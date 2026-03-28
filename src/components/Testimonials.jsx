@@ -1,100 +1,161 @@
-const steps = [
-  { number: "01", title: "Share Your Design",  desc: "Send us your artwork, logo, or idea. Our team helps you finalise the perfect design." },
-  { number: "02", title: "We Prepare & Print", desc: "Your order goes into production using premium materials and precision printing equipment." },
-  { number: "03", title: "Quality Check",      desc: "Every item is inspected before packing to make sure it meets our standards." },
-  { number: "04", title: "Delivered to You",   desc: "Packed securely and shipped directly to your doorstep — on time, every time." },
+import { useState, useEffect } from "react"
+import { Star, Quote } from "lucide-react"
+
+const testimonials = [
+  {
+    name: "Rahul Sharma",
+    role: "Marketing Manager, TechCorp",
+    avatar: "RS",
+    rating: 5,
+    text: "Mekal delivered 200 custom polo shirts for our company event in just 5 days. The quality was exceptional — stitching, print clarity, fabric feel — all top notch. Will definitely order again.",
+    product: "Custom Polo T-Shirts",
+  },
+  {
+    name: "Priya Mehta",
+    role: "Founder, Bloom Café",
+    avatar: "PM",
+    rating: 5,
+    text: "Ordered branded mugs and bottles for our café merchandise. Every single piece looked exactly like the design mockup. The magic mugs were a huge hit with our customers!",
+    product: "Ceramic Mugs & Bottles",
+  },
+  {
+    name: "Arjun Nair",
+    role: "HR Head, InnovateTech",
+    avatar: "AN",
+    rating: 5,
+    text: "We placed a bulk order for employee onboarding kits — t-shirts, water bottles, ID card holders, and tote bags. Everything arrived on time, well-packaged, and perfectly printed.",
+    product: "Corporate Gifting Kit",
+  },
+  {
+    name: "Sneha Patel",
+    role: "Event Coordinator",
+    avatar: "SP",
+    rating: 5,
+    text: "The customized caps and jerseys for our sports day were a massive hit. Quick turnaround, great pricing, and the team was super responsive throughout the process.",
+    product: "Sports Apparel",
+  },
+  {
+    name: "Vikram Joshi",
+    role: "Owner, The Merch Store",
+    avatar: "VJ",
+    rating: 5,
+    text: "I run a merchandise store and Mekal has been my go-to for over a year. Consistent quality, no color bleeding, and they handle single orders without any fuss.",
+    product: "Custom Merchandise",
+  },
+  {
+    name: "Divya Krishnan",
+    role: "Brand Manager",
+    avatar: "DK",
+    rating: 5,
+    text: "Ordered premium stainless steel bottles with our company logo for a client gifting campaign. The engraving and print were flawless. Clients loved them!",
+    product: "Premium Steel Bottles",
+  },
 ]
 
-const mediaItems = [
-  { type: "image", src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800",  caption: "Design Consultation", span: "col-span-2 row-span-2" },
-  { type: "image", src: "https://images.unsplash.com/photo-1581093588401-22d4a6d18a44?q=80&w=800", caption: "Screen Printing",    span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800", caption: "Embroidery Work",    span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800",    caption: "Quality Inspection", span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=800", caption: "Final Packaging",   span: "col-span-1 row-span-1" },
-]
-
-export default function HowWeWork() {
+function StarRating({ count }) {
   return (
-    <section style={{ backgroundColor: "#065999" }} className="py-14 md:py-20 text-white overflow-hidden">
+    <div className="flex gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} size={13}
+          className={i < count ? "fill-amber-400 text-amber-400" : "text-zinc-200"} />
+      ))}
+    </div>
+  )
+}
+
+export default function Testimonials() {
+  const [current, setCurrent] = useState(0)
+  const [paused,  setPaused]  = useState(false)
+  const total = testimonials.length
+
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => setCurrent(c => (c + 1) % total), 4500)
+    return () => clearInterval(t)
+  }, [paused, total])
+
+  const visible = [0, 1, 2].map(offset => ({
+    ...testimonials[(current + offset) % total],
+    key: (current + offset) % total,
+  }))
+
+  return (
+    <section className="py-14 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         {/* Header */}
-        <div className="mb-12 md:mb-16 max-w-xl">
-          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-3"
+        <div className="text-center mb-10 md:mb-14">
+          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-2"
             style={{ color: "#5fc7f4" }}>
-            Behind the Scenes
+            Customer Stories
           </p>
-          <h2 className="text-2xl md:text-4xl font-bold leading-tight mb-4">
-            How We Bring Your<br />
-            <span style={{ color: "#5fc7f4" }}>Ideas to Life</span>
+          <h2 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: "#065999" }}>
+            What Our Clients Say
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
-            From design to delivery — here's a look at our printing process and the craftsmanship that goes into every order.
+          <p className="text-zinc-500 text-sm max-w-md mx-auto">
+            Trusted by startups, corporates and creators across India.
           </p>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
+            ))}
+            <span className="text-sm font-semibold text-zinc-900 ml-1">5.0</span>
+            <span className="text-sm text-zinc-400">· 200+ reviews</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-
-          {/* Steps */}
-          <div className="space-y-8">
-            {steps.map((step, i) => (
-              <div key={step.number} className="flex gap-5 group">
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0"
-                    style={{
-                      border: "1px solid rgba(95,199,244,0.4)",
-                      color: "#5fc7f4",
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#5fc7f4"; e.currentTarget.style.color = "#065999" }}
-                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#5fc7f4" }}>
-                    {step.number}
+        {/* Cards */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}>
+          {visible.map((t, i) => (
+            <div key={t.key}
+              className={`bg-white rounded-2xl p-6 border flex flex-col transition-all duration-500 ${
+                i === 1
+                  ? "shadow-lg scale-[1.02]"
+                  : "border-zinc-100 shadow-sm"
+              }`}
+              style={i === 1 ? { borderColor: "#5fc7f4" } : {}}>
+              <Quote size={22} className="mb-4 flex-shrink-0" style={{ color: "#5fc7f4" }} />
+              <p className="text-sm text-zinc-600 leading-relaxed flex-1 mb-5">"{t.text}"</p>
+              <div className="mb-4">
+                <span className="text-[11px] font-medium px-2.5 py-1 rounded-full"
+                  style={{ backgroundColor: "rgba(95,199,244,0.15)", color: "#065999" }}>
+                  {t.product}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pt-4 border-t border-zinc-50">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full text-white text-xs font-bold flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: "#065999" }}>
+                    {t.avatar}
                   </div>
-                  {i < steps.length - 1 && (
-                    <div className="w-px flex-1 mt-3 min-h-[32px]"
-                      style={{ backgroundColor: "rgba(95,199,244,0.2)" }} />
-                  )}
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900">{t.name}</p>
+                    <p className="text-xs text-zinc-400">{t.role}</p>
+                  </div>
                 </div>
-                <div className="pb-2 pt-1">
-                  <h3 className="text-base font-semibold mb-1 text-white">{step.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.60)" }}>
-                    {step.desc}
-                  </p>
-                </div>
+                <StarRating count={t.rating} />
               </div>
-            ))}
-          </div>
-
-          {/* Mobile: 2-col grid */}
-          <div className="grid grid-cols-2 gap-3 lg:hidden">
-            {mediaItems.map((item, i) => (
-              <div key={i} className="relative rounded-xl overflow-hidden aspect-square group">
-                <img src={item.src} alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 flex items-end"
-                  style={{ background: "linear-gradient(to top, rgba(6,89,153,0.8) 0%, transparent 60%)" }}>
-                  <p className="text-white text-xs font-medium px-3 py-2">{item.caption}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop: mosaic */}
-          <div className="hidden lg:grid grid-cols-2 grid-rows-3 gap-3 h-[480px]">
-            {mediaItems.map((item, i) => (
-              <div key={i} className={`relative rounded-xl overflow-hidden group ${item.span}`}>
-                <img src={item.src} alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end"
-                  style={{ background: "linear-gradient(to top, rgba(6,89,153,0.85) 0%, transparent 60%)" }}>
-                  <p className="text-white text-xs font-medium px-3 py-2 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    {item.caption}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
+            </div>
+          ))}
         </div>
+
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-2">
+          {testimonials.map((_, i) => (
+            <button key={i} onClick={() => setCurrent(i)}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width:           i === current ? "2rem" : "0.5rem",
+                height:          "0.5rem",
+                backgroundColor: i === current ? "#065999" : "#5fc7f4",
+                opacity:         i === current ? 1 : 0.4,
+              }} />
+          ))}
+        </div>
+
       </div>
     </section>
   )

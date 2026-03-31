@@ -6,7 +6,6 @@
 const logos = [
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/Zomato_Logo.svg.png", alt: "Zomato" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/weas%20ahgshags.png", alt: "Brand" },
-  { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/wave%20(1)-Photoroom.png", alt: "Wave" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/Vivo_(technology_company)-Logo.wine.png", alt: "Vivo" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/testimonial-2.jpg", alt: "Brand" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/Sport_since_center_logo.png", alt: "Sport Since Center" },
@@ -31,6 +30,7 @@ const logos = [
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/Bajaj_Finserv_Logo.png", alt: "Bajaj Finserv" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/AU-Bank-new-logo-for-GBM_1024X1024_(cropped).png", alt: "AU Bank" },
   { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/308119154_155576693769875_253814155051058336_n.png", alt: "Brand" },
+  { src: "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/446ef49dc08bfae77996e617509a1815.jpg", alt: "Brand" }, // ← newly added
 ]
 
 const DOUBLED = [...logos, ...logos, ...logos]

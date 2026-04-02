@@ -1,9 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ChevronDown, ChevronRight, Search, X, Loader2, Menu, HeadphonesIcon } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { nameToSlug } from "@/lib/slugutils"
+
+// ── Theme colours (single source of truth) ───────────────────────────────────
+const BG    = "#5fc7f4"   // navbar / sheet background
+const DARK  = "#065999"   // primary text / icon colour
+const NAVY  = "#0a3d62"   // deeper navy for headings in sheet
 
 // ── Badge ─────────────────────────────────────────────────────────────────────
 const BADGE_STYLES = {
@@ -23,6 +28,14 @@ function Badge({ label }) {
   )
 }
 
+// ── Helper: split a category name at "&" into two display lines ───────────────
+// Returns [line1, line2] or [name, null] if no "&"
+function splitAtAmpersand(name) {
+  const idx = name.indexOf("&")
+  if (idx === -1) return [name, null]
+  return [name.slice(0, idx).trim(), "& " + name.slice(idx + 1).trim()]
+}
+
 export default function Navbar() {
   const [open,            setOpen]            = useState(false)
   const [expandedMobile,  setExpandedMobile]  = useState({})
@@ -39,14 +52,14 @@ export default function Navbar() {
   const menuCloseRef = useRef(null)
 
   // Search
-  const [query,    setQuery]    = useState("")
-  const [results,  setResults]  = useState([])
-  const [searching,setSearching]= useState(false)
-  const [showDrop, setShowDrop] = useState(false)
-  const searchRef      = useRef(null)
+  const [query,     setQuery]     = useState("")
+  const [results,   setResults]   = useState([])
+  const [searching, setSearching] = useState(false)
+  const [showDrop,  setShowDrop]  = useState(false)
+  const searchRef       = useRef(null)
   const mobileSearchRef = useRef(null)
-  const debounceRef    = useRef(null)
-  const navigate       = useNavigate()
+  const debounceRef     = useRef(null)
+  const navigate        = useNavigate()
 
   // ── Nav data ──────────────────────────────────────────────────────────────
   async function fetchNavTree() {
@@ -95,17 +108,22 @@ export default function Navbar() {
 
   useEffect(() => {
     function handler(e) {
-      if (searchRef.current && !searchRef.current.contains(e.target)) setShowDrop(false)
+      if (searchRef.current && !searchRef.current.contains(e.target))       setShowDrop(false)
       if (mobileSearchRef.current && !mobileSearchRef.current.contains(e.target))
         if (mobileSearch && !query) setMobileSearch(false)
-      if (navBarRef.current && !navBarRef.current.contains(e.target)) setActiveMenu(null)
+      if (navBarRef.current && !navBarRef.current.contains(e.target))       setActiveMenu(null)
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [mobileSearch, query])
 
   function clearSearch() { setQuery(""); setResults([]); setShowDrop(false) }
-  function handleResultClick(name) { navigate(`/product/${nameToSlug(name)}`); clearSearch(); setMobileSearch(false); setActiveMenu(null) }
+  function handleResultClick(name) {
+    navigate(`/product/${nameToSlug(name)}`)
+    clearSearch()
+    setMobileSearch(false)
+    setActiveMenu(null)
+  }
   function handleSearchKeyDown(e) {
     if (e.key === "Enter" && results.length > 0) handleResultClick(results[0].name)
     if (e.key === "Escape") clearSearch()
@@ -119,15 +137,12 @@ export default function Navbar() {
     const triggerEl = triggerRefs.current[catId]
     const navEl     = navBarRef.current
     if (!triggerEl || !navEl) { setActiveMenu(catId); return }
-
     const triggerRect = triggerEl.getBoundingClientRect()
     const navRect     = navEl.getBoundingClientRect()
-
-    const DROPDOWN_W = 820
+    const DROPDOWN_W  = 820
     let left = triggerRect.left - navRect.left + triggerRect.width / 2 - DROPDOWN_W / 2
     const maxLeft = navRect.width - DROPDOWN_W - 8
     left = Math.max(8, Math.min(left, maxLeft))
-
     setMenuLeft(left)
     setActiveMenu(catId)
   }
@@ -136,11 +151,9 @@ export default function Navbar() {
     clearTimeout(menuCloseRef.current)
     openMenu(catId)
   }
-
   function handleMenuLeave() {
     menuCloseRef.current = setTimeout(() => setActiveMenu(null), 80)
   }
-
   function handleMenuEnter() {
     clearTimeout(menuCloseRef.current)
   }
@@ -148,162 +161,258 @@ export default function Navbar() {
   const activeCat = navTree.find(c => c.id === activeMenu)
 
   return (
-    <header ref={navBarRef} className="sticky top-0 z-50 border-b shadow-sm" style={{ backgroundColor: "#5fc7f4" }}>
+    <header ref={navBarRef} className="sticky top-0 z-50 border-b shadow-sm" style={{ backgroundColor: BG }}>
 
-      {/* ── Top bar ── */}
-      <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
+      {/* ══════════════════════════════════════════════════════════════════════
+          DESKTOP LAYOUT — two rows
+          Row 1: Logo  |  Brand name + search bar  |  icons
+          Row 2: category tabs
+         ══════════════════════════════════════════════════════════════════════ */}
 
-        {/* Mobile hamburger */}
-        <div className="flex items-center md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <button className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 text-[#065999] transition-colors">
-                <Menu size={22} />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto p-0">
-              <div className="sticky top-0 bg-white border-b px-4 py-4 z-10">
-                <h2 className="text-base font-bold text-zinc-900">Menu</h2>
-              </div>
-              <div className="px-3 py-4 space-y-1">
-                {!navLoaded && (
-                  <div className="flex items-center gap-2 px-3 py-3 text-sm text-zinc-400">
-                    <Loader2 size={14} className="animate-spin" /> Loading…
-                  </div>
-                )}
-                {navTree.map(cat => {
-                  const catOpen = expandedMobile[cat.id]
-                  return (
-                    <div key={cat.id}>
-                      <div className="flex items-center rounded-xl">
-                        <Link to={`/category/${cat.id}`} onClick={() => setOpen(false)}
-                          className="flex-1 px-3 py-3 text-sm font-semibold text-zinc-900">
-                          {cat.name}
-                        </Link>
-                        {cat.subcategories.length > 0 && (
-                          <button onClick={() => toggleMobile(cat.id)} className="px-3 py-3 text-zinc-400">
-                            {catOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                          </button>
-                        )}
-                      </div>
-                      {catOpen && (
-                        <div className="ml-4 border-l-2 border-zinc-100 pl-3 mb-2 space-y-1">
-                          {cat.subcategories.map(sub => {
-                            const subOpen = expandedSection[sub.id] ?? false
-                            return (
-                              <div key={sub.id}>
-                                <div className="flex items-center">
-                                  <span className="flex-1 px-2 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                                    {sub.name}<Badge label={sub.badge} />
-                                  </span>
-                                  {sub.items.length > 0 && (
-                                    <button onClick={() => toggleSection(sub.id)} className="px-2 py-1.5 text-zinc-400">
-                                      {subOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                                    </button>
-                                  )}
-                                </div>
-                                {subOpen && sub.items.map(item => (
-                                  <Link key={item.id} to={`/product/${nameToSlug(item.name)}`}
-                                    onClick={() => setOpen(false)}
-                                    className="block px-2 py-2 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
-                                    {item.name}<Badge label={item.badge} />
-                                  </Link>
-                                ))}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-                <div className="pt-4 mt-4 border-t">
-                  <a href="https://wa.me/+919131387559" target="_blank" rel="noreferrer"
-                    className="flex items-center gap-3 px-3 py-3 text-sm font-semibold text-green-700 rounded-xl hover:bg-green-50">
-                    💬 Chat on WhatsApp
-                  </a>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
+      {/* ── Desktop Row 1 ── */}
+      <div className="hidden md:flex items-center px-6 h-16 gap-4">
 
         {/* Logo */}
-        <Link to="/" className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex-shrink-0">
-          <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-9 md:h-11 w-auto object-contain" />
+        <Link to="/" className="flex-shrink-0">
+          <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-11 w-auto object-contain" />
         </Link>
 
-        {/* Desktop search */}
-        <div ref={searchRef} className="hidden md:flex flex-1 max-w-lg mx-6 relative">
-          <div className="relative w-full">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#065999]/60 pointer-events-none" />
-            <input value={query} onChange={e => setQuery(e.target.value)}
+        {/* Brand name + search — centre column */}
+        <div className="flex-1 flex flex-col items-center gap-1 px-4">
+          {/* Big bold brand name */}
+          <span
+            className="font-extrabold tracking-wide leading-none select-none"
+            style={{
+              color:      DARK,
+              fontSize:   "1.35rem",
+              letterSpacing: "0.04em",
+              textShadow: "0 1px 2px rgba(0,0,0,0.08)",
+              fontFamily: "'Segoe UI', system-ui, sans-serif",
+            }}>
+            MEKAL ENTERPRISES
+          </span>
+
+          {/* Search bar — identical logic / styles as original */}
+          <div ref={searchRef} className="relative w-full max-w-lg">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: `${DARK}99` }} />
+            <input
+              value={query}
+              onChange={e => setQuery(e.target.value)}
               onKeyDown={handleSearchKeyDown}
-              onFocus={() => results.length > 0 && setShowDrop(true)}
+              onFocus={e => {
+                if (results.length > 0) setShowDrop(true)
+                e.target.style.background = "#fff"
+                e.target.style.color = "#1a1a1a"
+              }}
+              onBlur={e => {
+                e.target.style.background = "rgba(255,255,255,0.35)"
+                e.target.style.color = DARK
+              }}
               placeholder="Search products..."
-              className="w-full pl-9 pr-9 h-9 bg-white/30 border border-white/40 rounded-xl text-sm text-[#065999] placeholder:text-[#065999]/50 focus:bg-white focus:text-zinc-900 focus:placeholder:text-zinc-400 focus:outline-none transition-colors font-medium" />
+              className="w-full pl-9 pr-9 h-8 rounded-xl text-sm font-medium focus:outline-none transition-colors"
+              style={{
+                background: "rgba(255,255,255,0.35)",
+                border:     "1px solid rgba(255,255,255,0.5)",
+                color:      DARK,
+              }}
+            />
             {query && (
-              <button onClick={clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#065999]/60">
+              <button onClick={clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: `${DARK}99` }}>
                 {searching ? <Loader2 size={13} className="animate-spin" /> : <X size={13} />}
               </button>
             )}
+
+            {/* Search dropdown */}
+            {showDrop && results.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden z-50">
+                <ul>
+                  {results.map(p => (
+                    <li key={p.id}>
+                      <button onClick={() => handleResultClick(p.name)}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 transition-colors text-left border-b last:border-b-0">
+                        <div className="w-9 h-9 rounded-lg overflow-hidden bg-zinc-100 flex-shrink-0">
+                          {p.image_url
+                            ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                            : <div className="w-full h-full bg-zinc-200" />}
+                        </div>
+                        <span className="text-sm text-zinc-800 flex-1 leading-snug">{p.name}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {showDrop && results.length === 0 && query && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-zinc-100 z-50 px-4 py-5 text-sm text-center text-zinc-400">
+                No results for "<span className="font-medium text-zinc-600">{query}</span>"
+              </div>
+            )}
           </div>
-          {showDrop && results.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden z-50">
-              <ul>
-                {results.map(p => (
-                  <li key={p.id}>
-                    <button onClick={() => handleResultClick(p.name)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 transition-colors text-left border-b last:border-b-0">
-                      <div className="w-9 h-9 rounded-lg overflow-hidden bg-zinc-100 flex-shrink-0">
-                        {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-zinc-200" />}
-                      </div>
-                      <span className="text-sm text-zinc-800 flex-1 leading-snug">{p.name}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {showDrop && results.length === 0 && query && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-zinc-100 z-50 px-4 py-5 text-sm text-center text-zinc-400">
-              No results for "<span className="font-medium text-zinc-600">{query}</span>"
-            </div>
-          )}
         </div>
 
-        {/* Right — customer care icon (WhatsApp) + mobile search */}
-        <div className="flex items-center gap-1">
+        {/* Customer care icon */}
+        <a href="https://wa.me/+919131387559" target="_blank" rel="noreferrer"
+          aria-label="Customer Care on WhatsApp"
+          className="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 transition-colors flex-shrink-0"
+          title="Customer Care">
+          <HeadphonesIcon size={22} style={{ color: DARK }} />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-green-500 border border-white" />
+        </a>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          MOBILE LAYOUT — single row: hamburger | logo+name | search+care
+         ══════════════════════════════════════════════════════════════════════ */}
+      <div className="flex md:hidden items-center justify-between px-3 h-14">
+
+        {/* Hamburger */}
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <button className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 transition-colors" style={{ color: DARK }}>
+              <Menu size={22} />
+            </button>
+          </SheetTrigger>
+
+          {/* ── Mobile slide-in sheet — fully themed ── */}
+          <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto p-0 border-0"
+            style={{ backgroundColor: BG }}>
+
+            {/* Sheet header */}
+            <div className="sticky top-0 z-10 px-4 py-4 border-b" style={{ backgroundColor: BG, borderColor: `${DARK}33` }}>
+              <div className="flex items-center gap-3">
+                <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-8 w-auto object-contain" />
+                <span className="font-extrabold text-sm tracking-wide" style={{ color: DARK }}>MEKAL ENTERPRISES</span>
+              </div>
+            </div>
+
+            {/* Nav tree */}
+            <div className="px-3 py-4 space-y-1">
+              {!navLoaded && (
+                <div className="flex items-center gap-2 px-3 py-3 text-sm" style={{ color: `${DARK}88` }}>
+                  <Loader2 size={14} className="animate-spin" /> Loading…
+                </div>
+              )}
+
+              {navTree.map(cat => {
+                const catOpen = expandedMobile[cat.id]
+                return (
+                  <div key={cat.id} className="rounded-xl overflow-hidden">
+                    {/* ── Level 1: Category ── */}
+                    <div className="flex items-center rounded-xl" style={{ backgroundColor: catOpen ? `${DARK}18` : "transparent" }}>
+                      <Link
+                        to={`/category/${cat.id}`}
+                        onClick={() => setOpen(false)}
+                        className="flex-1 px-3 py-3 text-sm font-extrabold"
+                        style={{ color: NAVY }}>
+                        {cat.name}
+                      </Link>
+                      {cat.subcategories.length > 0 && (
+                        <button
+                          onClick={() => toggleMobile(cat.id)}
+                          className="px-3 py-3"
+                          style={{ color: DARK }}>
+                          {catOpen
+                            ? <ChevronDown size={16} />
+                            : <ChevronRight size={16} />}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* ── Level 2: Subcategories ── */}
+                    {catOpen && (
+                      <div className="ml-4 mb-2 mt-1 space-y-1 border-l-2 pl-3" style={{ borderColor: `${DARK}44` }}>
+                        {cat.subcategories.map(sub => {
+                          const subOpen = expandedSection[sub.id] ?? false
+                          return (
+                            <div key={sub.id}>
+                              <div className="flex items-center rounded-lg" style={{ backgroundColor: subOpen ? `${DARK}12` : "transparent" }}>
+                                <span className="flex-1 px-2 py-2 text-[11px] font-bold uppercase tracking-wider" style={{ color: DARK }}>
+                                  {sub.name}<Badge label={sub.badge} />
+                                </span>
+                                {sub.items.length > 0 && (
+                                  <button onClick={() => toggleSection(sub.id)} className="px-2 py-2" style={{ color: DARK }}>
+                                    {subOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                                  </button>
+                                )}
+                              </div>
+
+                              {/* ── Level 3: Items ── */}
+                              {subOpen && (
+                                <div className="ml-3 border-l pl-3 space-y-0.5 pb-1" style={{ borderColor: `${DARK}30` }}>
+                                  {sub.items.map(item => (
+                                    <Link
+                                      key={item.id}
+                                      to={`/product/${nameToSlug(item.name)}`}
+                                      onClick={() => setOpen(false)}
+                                      className="flex items-center py-2 text-sm rounded-lg px-2 transition-colors"
+                                      style={{ color: `${DARK}dd` }}
+                                      onMouseEnter={e => e.currentTarget.style.backgroundColor = `${DARK}15`}
+                                      onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}>
+                                      <span className="w-1.5 h-1.5 rounded-full mr-2 flex-shrink-0" style={{ backgroundColor: `${DARK}88` }} />
+                                      {item.name}<Badge label={item.badge} />
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+
+              {/* WhatsApp CTA */}
+              <div className="pt-4 mt-4 border-t" style={{ borderColor: `${DARK}33` }}>
+                <a href="https://wa.me/+919131387559" target="_blank" rel="noreferrer"
+                  className="flex items-center gap-3 px-3 py-3 text-sm font-semibold rounded-xl transition-colors"
+                  style={{ color: "#166534", backgroundColor: "rgba(255,255,255,0.35)" }}>
+                  💬 Chat on WhatsApp
+                </a>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        {/* Logo + name — centred */}
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-9 w-auto object-contain" />
+          <span className="font-extrabold text-xs leading-tight tracking-wide" style={{ color: DARK }}>
+            MEKAL<br />ENTERPRISES
+          </span>
+        </Link>
+
+        {/* Right: search + customer care */}
+        <div className="flex items-center gap-0.5">
           <button onClick={() => setMobileSearch(s => !s)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 text-[#065999]">
+            className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 transition-colors"
+            style={{ color: DARK }}>
             <Search size={20} />
           </button>
-
-          {/* Customer care icon — WhatsApp link */}
-          <a
-            href="https://wa.me/+919131387559"
-            target="_blank"
-            rel="noreferrer"
+          <a href="https://wa.me/+919131387559" target="_blank" rel="noreferrer"
             aria-label="Customer Care on WhatsApp"
-            className="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 transition-colors group"
-            title="Customer Care"
-          >
-            <HeadphonesIcon size={22} className="text-[#065999]" />
-            {/* Green WhatsApp dot indicator */}
+            className="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-black/10 transition-colors"
+            title="Customer Care">
+            <HeadphonesIcon size={22} style={{ color: DARK }} />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-green-500 border border-white" />
           </a>
         </div>
       </div>
 
-      {/* Mobile search bar */}
+      {/* ── Mobile search bar (expands below top row) ── */}
       {mobileSearch && (
         <div ref={mobileSearchRef} className="md:hidden px-3 pb-3 relative">
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
-            <input autoFocus value={query} onChange={e => setQuery(e.target.value)}
+            <input
+              autoFocus
+              value={query}
+              onChange={e => setQuery(e.target.value)}
               onKeyDown={handleSearchKeyDown}
               placeholder="Search products..."
-              className="w-full pl-9 pr-10 py-3 bg-white rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none shadow-md" />
+              className="w-full pl-9 pr-10 py-3 bg-white rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none shadow-md"
+            />
             <button onClick={query ? clearSearch : () => setMobileSearch(false)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
               {searching ? <Loader2 size={13} className="animate-spin" /> : <X size={13} />}
@@ -317,7 +426,9 @@ export default function Navbar() {
                     <button onClick={() => handleResultClick(p.name)}
                       className="w-full flex items-center gap-3 px-3 py-3 hover:bg-zinc-50 transition-colors text-left border-b last:border-b-0">
                       <div className="w-9 h-9 rounded-lg overflow-hidden bg-zinc-100 flex-shrink-0">
-                        {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-zinc-200" />}
+                        {p.image_url
+                          ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                          : <div className="w-full h-full bg-zinc-200" />}
                       </div>
                       <span className="text-sm text-zinc-800 flex-1 leading-snug">{p.name}</span>
                     </button>
@@ -329,43 +440,65 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* ── Desktop categories bar ── */}
-      <div className="hidden md:block border-t border-[#065999]/20 relative" style={{ backgroundColor: "#5fc7f4" }}>
+      {/* ══════════════════════════════════════════════════════════════════════
+          DESKTOP CATEGORIES BAR
+         ══════════════════════════════════════════════════════════════════════ */}
+      <div className="hidden md:block border-t relative" style={{ backgroundColor: BG, borderColor: `${DARK}33` }}>
 
         {/* Category triggers */}
         <div className="flex items-stretch justify-between px-2">
           {!navLoaded && (
-            <div className="flex items-center px-4 py-2 text-[#065999]/50 text-xs">
+            <div className="flex items-center px-4 py-2 text-xs" style={{ color: `${DARK}80` }}>
               <Loader2 size={12} className="animate-spin" />
             </div>
           )}
-          {navTree.map(cat => (
-            <div
-              key={cat.id}
-              ref={el => { triggerRefs.current[cat.id] = el }}
-              onMouseEnter={() => handleTriggerEnter(cat.id)}
-              onMouseLeave={handleMenuLeave}
-              className="relative flex-1">
-              <Link
-                to={`/category/${cat.id}`}
-                onClick={() => setActiveMenu(null)}
-                className={`flex items-center justify-center gap-0.5 w-full py-2.5 text-[12px] font-bold text-[#065999] hover:bg-black/10 transition-colors text-center leading-tight px-0.5 ${activeMenu === cat.id ? "bg-black/10" : ""}`}>
-                {cat.name.includes("&") ? (
-                  <span className="text-center whitespace-nowrap">
-                    {cat.name.split("&")[0].trim()}&nbsp;&amp;&nbsp;{cat.name.split("&").slice(1).join("&").trim()}
-                  </span>
-                ) : (
-                  <span className="whitespace-nowrap">{cat.name}</span>
-                )}
-                {cat.subcategories.length > 0 && (
-                  <ChevronDown size={11} className={`flex-shrink-0 transition-transform ml-0.5 ${activeMenu === cat.id ? "rotate-180" : ""}`} />
-                )}
-              </Link>
-            </div>
-          ))}
+
+          {navTree.map(cat => {
+            const [line1, line2] = splitAtAmpersand(cat.name)
+            const isActive       = activeMenu === cat.id
+            const hasSubs        = cat.subcategories.length > 0
+
+            return (
+              <div
+                key={cat.id}
+                ref={el => { triggerRefs.current[cat.id] = el }}
+                onMouseEnter={() => handleTriggerEnter(cat.id)}
+                onMouseLeave={handleMenuLeave}
+                className="relative flex-1">
+                <Link
+                  to={`/category/${cat.id}`}
+                  onClick={() => setActiveMenu(null)}
+                  className="flex flex-col items-center justify-center w-full py-2.5 px-1 text-center transition-colors"
+                  style={{
+                    backgroundColor: isActive ? "rgba(0,0,0,0.1)" : "transparent",
+                    color: DARK,
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.07)" }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.backgroundColor = "transparent" }}>
+
+                  {/* Line 1 */}
+                  <span className="text-[11px] font-bold leading-tight whitespace-nowrap">{line1}</span>
+
+                  {/* Line 2 (only when name has &) + chevron inline */}
+                  {line2 ? (
+                    <span className="flex items-center gap-0.5 text-[11px] font-bold leading-tight whitespace-nowrap">
+                      {line2}
+                      {hasSubs && (
+                        <ChevronDown size={10} className={`flex-shrink-0 transition-transform ml-0.5 ${isActive ? "rotate-180" : ""}`} />
+                      )}
+                    </span>
+                  ) : (
+                    hasSubs && (
+                      <ChevronDown size={10} className={`flex-shrink-0 transition-transform mt-0.5 ${isActive ? "rotate-180" : ""}`} />
+                    )
+                  )}
+                </Link>
+              </div>
+            )
+          })}
         </div>
 
-        {/* ── Mega dropdown ── */}
+        {/* ── Mega dropdown — IDENTICAL logic to original ── */}
         {activeMenu && activeCat?.subcategories.length > 0 && (
           <div
             onMouseEnter={handleMenuEnter}
@@ -378,9 +511,11 @@ export default function Navbar() {
             }}>
             <div className="p-5">
               <div className="flex items-center justify-between mb-4 pb-3 border-b">
-                <Link to={`/category/${activeCat.id}`}
+                <Link
+                  to={`/category/${activeCat.id}`}
                   onClick={() => setActiveMenu(null)}
-                  className="text-xs font-bold text-[#065999] hover:underline">
+                  className="text-xs font-bold hover:underline"
+                  style={{ color: DARK }}>
                   View all {activeCat.name} →
                 </Link>
                 <span className="text-[10px] text-zinc-400">
@@ -388,10 +523,14 @@ export default function Navbar() {
                 </span>
               </div>
 
-              <div className={`grid gap-x-6 gap-y-4 ${activeCat.subcategories.length <= 2 ? "grid-cols-2" : activeCat.subcategories.length <= 3 ? "grid-cols-3" : "grid-cols-4"}`}>
+              <div className={`grid gap-x-6 gap-y-4 ${
+                activeCat.subcategories.length <= 2 ? "grid-cols-2"
+                : activeCat.subcategories.length <= 3 ? "grid-cols-3"
+                : "grid-cols-4"}`}>
                 {activeCat.subcategories.map(sub => (
                   <div key={sub.id}>
-                    <Link to={`/category/${activeCat.id}`}
+                    <Link
+                      to={`/category/${activeCat.id}`}
                       onClick={() => setActiveMenu(null)}
                       className="block text-[10px] font-bold uppercase tracking-widest text-zinc-800 hover:text-[#065999] mb-2 border-b pb-1.5 transition-colors">
                       {sub.name}<Badge label={sub.badge} />
@@ -400,7 +539,8 @@ export default function Navbar() {
                       <ul className="space-y-1">
                         {sub.items.map(item => (
                           <li key={item.id}>
-                            <Link to={`/product/${nameToSlug(item.name)}`}
+                            <Link
+                              to={`/product/${nameToSlug(item.name)}`}
                               onClick={() => setActiveMenu(null)}
                               className="block text-[12px] text-zinc-500 hover:text-zinc-900 transition-colors leading-snug hover:underline underline-offset-2">
                               {item.name}<Badge label={item.badge} />

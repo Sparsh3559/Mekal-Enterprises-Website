@@ -229,10 +229,19 @@ export default function ProductPage() {
 
             {/* Price */}
             {product.price ? (
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold" style={{ color: DARK }}>₹{product.price}</span>
-                <span className="text-sm text-zinc-400 line-through">₹{Math.round(product.price * 1.2)}</span>
-                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">17% OFF</span>
+              <div className="flex flex-col gap-0.5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                  Starting from
+                </p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-3xl font-bold" style={{ color: DARK }}>
+                    ₹{product.price}
+                  </span>
+                  <span className="text-sm text-zinc-400">/ piece</span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Final price depends on quantity &amp; customisation
+                </p>
               </div>
             ) : (
               <div>
@@ -317,9 +326,14 @@ export default function ProductPage() {
                   </div>
                   <div className="p-3">
                     <p className="text-xs font-semibold text-zinc-800 line-clamp-2 leading-snug mb-1">{r.name}</p>
-                    {r.price
-                      ? <p className="text-xs font-bold" style={{ color: DARK }}>₹{r.price}</p>
-                      : <p className="text-xs text-zinc-400">Price on request</p>}
+                    {r.price ? (
+                      <div>
+                        <p className="text-[10px] text-zinc-400 uppercase tracking-wide">From</p>
+                        <p className="text-xs font-bold" style={{ color: DARK }}>₹{r.price} / piece</p>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-zinc-400">Price on request</p>
+                    )}
                   </div>
                 </Link>
               ))}

@@ -15,7 +15,7 @@ const DARK      = "#065999"
 const BRAND     = "#5fc7f4"
 const WHATSAPP  = "919131387559"
 
-// ── Star rating display ───────────────────────────────────────────────────────
+// ── Star rating display ───────────────────────────────────────────────────
 function Stars({ rating = 4.5, count = 128 }) {
   const full = Math.floor(rating)
   const half = rating % 1 >= 0.5

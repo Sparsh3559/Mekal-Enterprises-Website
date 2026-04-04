@@ -31,7 +31,14 @@ function ProductCard({ name, image_url, tag, price }) {
         )}
       </div>
       <p className="text-xs md:text-sm font-medium text-zinc-800 leading-snug line-clamp-2">{name}</p>
-      {price && <p className="text-xs md:text-sm font-semibold mt-0.5" style={{ color: DARK }}>₹{price}</p>}
+      {price ? (
+        <div className="mt-0.5">
+          <p className="text-[10px] md:text-xs text-zinc-400 uppercase tracking-wide leading-none">Starting from</p>
+          <p className="text-xs md:text-sm font-bold mt-0.5" style={{ color: DARK }}>₹{price} <span className="font-normal text-zinc-400">/ piece</span></p>
+        </div>
+      ) : (
+        <p className="text-[10px] md:text-xs text-zinc-400 mt-0.5">Price on request</p>
+      )}
       <p className="text-[10px] md:text-xs text-zinc-400 mt-0.5">View details →</p>
     </Link>
   )

@@ -56,13 +56,6 @@ export default function BrandStrip() {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 z-10"
           style={{ background: "linear-gradient(to left, #ffffff, transparent)" }} />
 
-        {/*
-          KEY FIX for smoothness:
-          - All logo slots are EXACTLY the same fixed width (140px) and height (64px)
-          - Images use object-contain inside — no layout shifting
-          - Animation moves -50% (exactly one copy width) so loop is invisible
-          - will-change: transform + translateZ(0) forces GPU compositing
-        */}
         <div
           className="brand-track flex items-center"
           style={{ width: "max-content" }}>
@@ -84,9 +77,11 @@ export default function BrandStrip() {
                   transition: "opacity 0.25s ease",
                   display:    "block",
                   flexShrink: 0,
+                  // Prevent image drag on mobile which can also freeze animation
+                  pointerEvents: "none",
+                  userSelect: "none",
+                  WebkitUserSelect: "none",
                 }}
-                onMouseEnter={e => e.currentTarget.style.opacity = "1"}
-                onMouseLeave={e => e.currentTarget.style.opacity = "0.75"}
               />
             </div>
           ))}
@@ -99,10 +94,20 @@ export default function BrandStrip() {
           will-change: transform;
           transform: translateZ(0);
           backface-visibility: hidden;
+          /* Prevent touch interaction from triggering hover states */
+          -webkit-tap-highlight-color: transparent;
         }
-        .brand-track:hover {
-          animation-play-state: paused;
+
+        /*
+          Only pause on hover for devices that support hover (i.e. have a mouse).
+          @media (hover: hover) excludes touchscreens — tap will never pause the strip.
+        */
+        @media (hover: hover) and (pointer: fine) {
+          .brand-track:hover {
+            animation-play-state: paused;
+          }
         }
+
         @keyframes marquee {
           0%   { transform: translateX(0) translateZ(0); }
           100% { transform: translateX(-50%) translateZ(0); }

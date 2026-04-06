@@ -5,12 +5,16 @@ const steps = [
   { number: "04", title: "Delivered to You",   desc: "Packed securely and shipped directly to your doorstep — on time, every time." },
 ]
 
-const mediaItems = [
-  { type: "image", src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800",  caption: "Design Consultation", span: "col-span-2 row-span-2" },
-  { type: "image", src: "https://images.unsplash.com/photo-1581093588401-22d4a6d18a44?q=80&w=800", caption: "Screen Printing",    span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800", caption: "Embroidery Work",    span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800",    caption: "Quality Inspection", span: "col-span-1 row-span-1" },
-  { type: "image", src: "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=800", caption: "Final Packaging",   span: "col-span-1 row-span-1" },
+// ── Replace these two src values with your Supabase video URLs ────────────────
+const VIDEOS = [
+  {
+    src:     "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/your-video-1.mp4",
+    caption: "Our Printing Process",
+  },
+  {
+    src:     "https://mzkizexagitatacuwwxj.supabase.co/storage/v1/object/public/products/products/your-video-2.mp4",
+    caption: "Quality & Packaging",
+  },
 ]
 
 export default function HowWeWork() {
@@ -31,7 +35,7 @@ export default function HowWeWork() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
           {/* Steps */}
           <div className="space-y-8">
@@ -53,30 +57,26 @@ export default function HowWeWork() {
             ))}
           </div>
 
-          {/* Mobile: 2-col grid */}
-          <div className="grid grid-cols-2 gap-3 lg:hidden">
-            {mediaItems.map((item, i) => (
-              <div key={i} className="relative rounded-xl overflow-hidden aspect-square group">
-                <img src={item.src} alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                  <p className="text-white text-xs font-medium px-3 py-2">{item.caption}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop: mosaic */}
-          <div className="hidden lg:grid grid-cols-2 grid-rows-3 gap-3 h-[480px]">
-            {mediaItems.map((item, i) => (
-              <div key={i} className={`relative rounded-xl overflow-hidden group ${item.span}`}>
-                <img src={item.src} alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-end">
-                  <p className="text-white text-xs font-medium px-3 py-2 translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    {item.caption}
-                  </p>
-                </div>
+          {/* Two reel-style videos side by side */}
+          <div className="flex gap-3 md:gap-4 justify-center">
+            {VIDEOS.map((v, i) => (
+              <div
+                key={i}
+                className="relative flex-1 rounded-2xl overflow-hidden group"
+                style={{ aspectRatio: "9/16", maxWidth: "220px" }}>
+                <video
+                  src={v.src}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+                {/* Subtle bottom gradient + caption */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <p className="absolute bottom-3 left-0 right-0 text-center text-white text-xs font-medium px-2">
+                  {v.caption}
+                </p>
               </div>
             ))}
           </div>

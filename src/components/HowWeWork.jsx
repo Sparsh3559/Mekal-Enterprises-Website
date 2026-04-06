@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react"
+
 const steps = [
   { number: "01", title: "Share Your Design",  desc: "Send us your artwork, logo, or idea. Our team helps you finalize the perfect design." },
   { number: "02", title: "We Prepare & Print", desc: "Your order goes into production using premium materials and precision printing equipment." },
@@ -16,6 +18,40 @@ const VIDEOS = [
     caption: "Quality & Packaging",
   },
 ]
+
+// Individual video component — uses ref to force play on mount
+function ReelVideo({ src, caption }) {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    el.muted = true
+    el.play().catch(() => {})           // catch any autoplay policy error silently
+  }, [src])
+
+  return (
+    <div
+      className="relative flex-shrink-0 rounded-[1.8rem] overflow-hidden bg-zinc-800"
+      style={{ width: "180px", height: "380px" }}>
+      <video
+        ref={ref}
+        src={src}
+        loop
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Bottom gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      <p className="absolute bottom-4 left-0 right-0 text-center text-white text-[11px] font-medium px-3 leading-tight">
+        {caption}
+      </p>
+    </div>
+  )
+}
 
 export default function HowWeWork() {
   return (
@@ -57,26 +93,10 @@ export default function HowWeWork() {
             ))}
           </div>
 
-          {/* Two phone-sized reel videos side by side — no border, just the frame size */}
-          <div className="flex gap-4 md:gap-6 justify-center items-center">
+          {/* Two phone-sized reels — equal fixed size, forced autoplay */}
+          <div className="flex gap-5 md:gap-8 justify-center items-center">
             {VIDEOS.map((v, i) => (
-              <div
-                key={i}
-                className="relative flex-shrink-0 rounded-[1.8rem] overflow-hidden"
-                style={{ width: "160px", height: "330px" }}>
-                <video
-                  src={v.src}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <p className="absolute bottom-3 left-0 right-0 text-center text-white text-[10px] font-medium px-2 leading-tight">
-                  {v.caption}
-                </p>
-              </div>
+              <ReelVideo key={i} src={v.src} caption={v.caption} />
             ))}
           </div>
 

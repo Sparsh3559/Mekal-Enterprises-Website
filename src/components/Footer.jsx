@@ -83,7 +83,6 @@ export default function Footer() {
   const companyInfo = [
     { label: "About Us",          to: "/about" },
     { label: "Working with Mekal",to: "/about" },
-    { label: "Privacy Policy",    to: "/privacy-policy" },
   ]
 
   const socials = [

@@ -57,13 +57,13 @@ export default function HowWeWork() {
             ))}
           </div>
 
-          {/* Two reel-style videos side by side */}
-          <div className="flex gap-3 md:gap-4 justify-center">
+          {/* Two phone-sized reel videos side by side — no border, just the frame size */}
+          <div className="flex gap-4 md:gap-6 justify-center items-center">
             {VIDEOS.map((v, i) => (
               <div
                 key={i}
-                className="relative flex-1 rounded-2xl overflow-hidden group"
-                style={{ aspectRatio: "9/16", maxWidth: "220px" }}>
+                className="relative flex-shrink-0 rounded-[1.8rem] overflow-hidden"
+                style={{ width: "160px", height: "330px" }}>
                 <video
                   src={v.src}
                   autoPlay
@@ -72,9 +72,8 @@ export default function HowWeWork() {
                   playsInline
                   className="w-full h-full object-cover"
                 />
-                {/* Subtle bottom gradient + caption */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <p className="absolute bottom-3 left-0 right-0 text-center text-white text-xs font-medium px-2">
+                <p className="absolute bottom-3 left-0 right-0 text-center text-white text-[10px] font-medium px-2 leading-tight">
                   {v.caption}
                 </p>
               </div>

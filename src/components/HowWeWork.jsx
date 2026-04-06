@@ -32,8 +32,8 @@ function ReelVideo({ src, caption }) {
 
   return (
     <div
-      className="relative flex-shrink-0 rounded-[1.8rem] overflow-hidden bg-zinc-800"
-      style={{ width: "180px", height: "380px" }}>
+      className="relative rounded-[1.8rem] overflow-hidden bg-zinc-800 flex-shrink-0"
+      style={{ aspectRatio: "9/16", height: "100%", maxHeight: "480px", width: "auto" }}>
       <video
         ref={ref}
         src={src}
@@ -93,8 +93,10 @@ export default function HowWeWork() {
             ))}
           </div>
 
-          {/* Two phone-sized reels — equal fixed size, forced autoplay */}
-          <div className="flex gap-5 md:gap-8 justify-center items-center">
+          {/* Two phone-shaped reels — 9:16 ratio, height drives width */}
+          <div
+            className="flex gap-4 md:gap-6 justify-center items-center"
+            style={{ height: "480px" }}>
             {VIDEOS.map((v, i) => (
               <ReelVideo key={i} src={v.src} caption={v.caption} />
             ))}

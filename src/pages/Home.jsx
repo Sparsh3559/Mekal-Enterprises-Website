@@ -5,7 +5,7 @@ import Hero from "../components/Hero"
 import WhatsAppButton from "../components/WhatsAppButton"
 import Footer from "../components/Footer"
 import Trustbar from "../components/Trustbar"
-import Promosection from "../components/Promosection"
+import PromoSection from "../components/Promosection"
 import HowWeWork from "../components/HowWeWork"
 import Testimonials from "../components/Testimonials"
 import SideStrips from "../components/SideStrips"
@@ -22,43 +22,29 @@ const FALLBACK_IMAGES = {
 }
 const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=800"
 
-/* ─── Reusable carousel that works on both mobile + desktop ─────────────────
-   Props:
-     services  – enriched array
-     current   – active index
-     setCurrent
-     total
-     prev / next
-     isMobile  – switches sizing only, logic is identical
-   ──────────────────────────────────────────────────────────────────────────── */
 function ServiceCarousel({ services, current, setCurrent, total, prev, next, isMobile }) {
-  // Card dimensions — mobile uses smaller sizes but same 5-card fan layout
-  const CARD_H  = isMobile ? 300  : 420
-  const cw      = isMobile ? 240  : 460   // center card width
-  const aw      = isMobile ? 110  : 220   // adjacent card width
-  const fw      = isMobile ? 65   : 140   // far card width
-  const gap     = isMobile ? 10   : 14
+  const CARD_H = isMobile ? 300 : 420
+  const cw     = isMobile ? 240 : 460
+  const aw     = isMobile ? 110 : 220
+  const fw     = isMobile ? 65  : 140
+  const gap    = isMobile ? 10  : 14
 
   return (
     <div>
-      {/* ── Fan stage ── */}
       <div
         className="relative flex items-center justify-center w-full select-none overflow-hidden"
-        style={{ height: CARD_H }}
-      >
+        style={{ height: CARD_H }}>
         {[-2, -1, 0, 1, 2].map((offset) => {
           const service    = services[(current + offset + total) % total]
           const isCenter   = offset === 0
           const isAdjacent = Math.abs(offset) === 1
           const isFar      = Math.abs(offset) === 2
-
           const translateX =
             offset === 0  ? 0 :
             offset === -1 ? -(cw / 2 + aw / 2 + gap) :
             offset ===  1 ?  (cw / 2 + aw / 2 + gap) :
             offset === -2 ? -(cw / 2 + aw + fw / 2 + gap * 2) :
                              (cw / 2 + aw + fw / 2 + gap * 2)
-
           return (
             <div
               key={service.id + "-" + offset}
@@ -71,47 +57,27 @@ function ServiceCarousel({ services, current, setCurrent, total, prev, next, isM
                 cursor:    isCenter ? "default" : "pointer",
                 zIndex:    isCenter ? 10 : isAdjacent ? 5 : 1,
                 transform: `translateX(${translateX}px) scale(${isCenter ? 1 : isAdjacent ? 0.95 : 0.88})`,
-              }}
-            >
-              <img
-                src={service.image}
-                alt={service.title}
-                draggable={false}
-                className="w-full h-full object-cover"
-              />
-
-              {/* Gradient overlay */}
-              <div
-                className="absolute inset-0"
-                style={{ background: "linear-gradient(to top, rgba(6,89,153,0.85) 0%, rgba(6,89,153,0.1) 50%, transparent 100%)" }}
-              />
-
-              {/* Center card label + CTA */}
+              }}>
+              <img src={service.image} alt={service.title} draggable={false} className="w-full h-full object-cover" />
+              <div className="absolute inset-0"
+                style={{ background: "linear-gradient(to top, rgba(6,89,153,0.85) 0%, rgba(6,89,153,0.1) 50%, transparent 100%)" }} />
               {isCenter && (
                 <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between"
                   style={{ padding: isMobile ? "14px 16px" : "24px" }}>
-                  <div>
-                    <h3
-                      className="text-white font-bold leading-tight"
-                      style={{ fontSize: isMobile ? "15px" : "24px" }}
-                    >
-                      {service.title}
-                    </h3>
-                  </div>
-                  <Link
-                    to={service.path}
-                    onClick={e => e.stopPropagation()}
+                  <h3 className="text-white font-bold leading-tight"
+                    style={{ fontSize: isMobile ? "15px" : "24px" }}>
+                    {service.title}
+                  </h3>
+                  <Link to={service.path} onClick={e => e.stopPropagation()}
                     className="flex-shrink-0 font-semibold rounded-full transition-colors"
                     style={{
-                      backgroundColor: "#5fc7f4",
-                      color: "#065999",
+                      backgroundColor: "#5fc7f4", color: "#065999",
                       fontSize: isMobile ? "11px" : "14px",
-                      padding: isMobile ? "6px 14px" : "10px 20px",
+                      padding:  isMobile ? "6px 14px" : "10px 20px",
                       marginLeft: isMobile ? "8px" : "16px",
                     }}
                     onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#fff" }}
-                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#5fc7f4" }}
-                  >
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#5fc7f4" }}>
                     Explore →
                   </Link>
                 </div>
@@ -120,23 +86,19 @@ function ServiceCarousel({ services, current, setCurrent, total, prev, next, isM
           )
         })}
       </div>
-
-
     </div>
   )
 }
 
-/* ─── Home page ──────────────────────────────────────────────────────────── */
 export default function Home() {
   const [services,   setServices]   = useState([])
   const [loadingSvc, setLoadingSvc] = useState(true)
   const [current,    setCurrent]    = useState(0)
   const [isMobile,   setIsMobile]   = useState(false)
 
-  /* Detect mobile */
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)")
-    const handler = (e) => setIsMobile(e.matches)
+    const handler = e => setIsMobile(e.matches)
     setIsMobile(mq.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)
@@ -146,7 +108,6 @@ export default function Home() {
     async function fetchServices() {
       const { data: cats } = await supabase.from("Categories").select("id, name").order("name")
       if (!cats?.length) { setLoadingSvc(false); return }
-
       const enriched = await Promise.all(cats.map(async (cat) => {
         const { data: subs } = await supabase.from("Subcategories").select("id").eq("category_id", cat.id).limit(3)
         let image = null
@@ -158,14 +119,8 @@ export default function Home() {
             image = products?.[0]?.image_url || null
           }
         }
-        return {
-          id:    cat.id,
-          title: cat.name,
-          image: image || FALLBACK_IMAGES[cat.name] || DEFAULT_FALLBACK,
-          path:  `/category/${cat.id}`,
-        }
+        return { id: cat.id, title: cat.name, image: image || FALLBACK_IMAGES[cat.name] || DEFAULT_FALLBACK, path: `/category/${cat.id}` }
       }))
-
       setServices(enriched)
       setLoadingSvc(false)
     }
@@ -176,7 +131,6 @@ export default function Home() {
   const prev  = () => setCurrent(c => (c - 1 + total) % total)
   const next  = () => setCurrent(c => (c + 1) % total)
 
-  /* Auto-advance */
   useEffect(() => {
     if (total < 2) return
     const t = setInterval(next, 4000)
@@ -187,15 +141,13 @@ export default function Home() {
     <>
       <SideStrips />
       <Navbar />
-      <Hero />
-      <Trustbar />
-      <BrandStrip />
 
-      {/* ── Services Section ── */}
+      {/* 1. Hero */}
+      <Hero />
+
+      {/* 2. Our Services */}
       <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-
-          {/* Header row */}
           <div className="flex items-end justify-between mb-8 md:mb-12">
             <div>
               <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-2" style={{ color: "#5fc7f4" }}>
@@ -208,57 +160,48 @@ export default function Home() {
                 High-quality custom printing solutions tailored for individuals, brands, and businesses.
               </p>
             </div>
-            {/* Prev/Next arrows — visible on all sizes */}
             {total > 1 && (
               <div className="flex items-center gap-3">
-                <button
-                  onClick={prev}
+                <button onClick={prev}
                   className="w-9 h-9 md:w-11 md:h-11 rounded-full border-2 flex items-center justify-center transition-all"
                   style={{ borderColor: "#5fc7f4", color: "#065999" }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#065999"; e.currentTarget.style.borderColor = "#065999"; e.currentTarget.style.color = "#fff" }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "#5fc7f4"; e.currentTarget.style.color = "#065999" }}
-                >
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor="#065999"; e.currentTarget.style.borderColor="#065999"; e.currentTarget.style.color="#fff" }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor="transparent"; e.currentTarget.style.borderColor="#5fc7f4"; e.currentTarget.style.color="#065999" }}>
                   <ChevronLeft size={16} />
                 </button>
-                <button
-                  onClick={next}
+                <button onClick={next}
                   className="w-9 h-9 md:w-11 md:h-11 rounded-full border-2 flex items-center justify-center transition-all"
                   style={{ borderColor: "#5fc7f4", color: "#065999" }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#065999"; e.currentTarget.style.borderColor = "#065999"; e.currentTarget.style.color = "#fff" }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "#5fc7f4"; e.currentTarget.style.color = "#065999" }}
-                >
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor="#065999"; e.currentTarget.style.borderColor="#065999"; e.currentTarget.style.color="#fff" }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor="transparent"; e.currentTarget.style.borderColor="#5fc7f4"; e.currentTarget.style.color="#065999" }}>
                   <ChevronRight size={16} />
                 </button>
               </div>
             )}
           </div>
 
-          {/* Body */}
           {loadingSvc ? (
             <div className="flex items-center justify-center h-48 md:h-80">
               <Loader2 size={28} className="animate-spin" style={{ color: "#5fc7f4" }} />
             </div>
           ) : services.length === 0 ? (
-            <div className="flex items-center justify-center text-sm text-zinc-400 h-40">
-              No categories yet.
-            </div>
+            <div className="flex items-center justify-center text-sm text-zinc-400 h-40">No categories yet.</div>
           ) : (
-            /* ── Single carousel for BOTH mobile and desktop ── */
             <ServiceCarousel
-              services={services}
-              current={current}
-              setCurrent={setCurrent}
-              total={total}
-              prev={prev}
-              next={next}
-              isMobile={isMobile}
-            />
+              services={services} current={current} setCurrent={setCurrent}
+              total={total} prev={prev} next={next} isMobile={isMobile} />
           )}
         </div>
       </section>
 
-      {/* ── Corporate Gifting Promo ── */}
-      <Promosection
+      {/* 3. Brand Strip */}
+      <BrandStrip />
+
+      {/* 4. Trust Bar */}
+      <Trustbar />
+
+      {/* 5. Corporate Gifting Promo */}
+      <PromoSection
         tag="Corporate Solutions"
         heading="Corporate Gifting for Every Occasion"
         description="Build lasting impressions with premium branded merchandise. From onboarding kits to festive hampers — crafted for teams of all sizes. Order in bulk or single pieces."
@@ -273,8 +216,12 @@ export default function Home() {
         ]}
       />
 
+      {/* 6. How We Work */}
       <HowWeWork />
+
+      {/* 7. Testimonials */}
       <Testimonials />
+
       <WhatsAppButton />
       <Footer />
     </>

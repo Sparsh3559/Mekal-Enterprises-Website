@@ -172,11 +172,11 @@ export default function Navbar() {
       {/* ══════════════════════════════════════════════════════════════════════
           DESKTOP — Row A: Logo | Brand name | Icons
          ══════════════════════════════════════════════════════════════════════ */}
-      <div className="hidden md:flex items-center px-6 gap-4" style={{ height: "68px" }}>
+      <div className="hidden md:flex items-center px-6 gap-4" style={{ height: "76px" }}>
 
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 flex items-center">
-          <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-12 w-auto object-contain" />
+          <img src="/mekal_logo.png" alt="Mekal Enterprises" className="h-16 w-auto object-contain" />
         </Link>
 
         {/* Brand name — centred */}

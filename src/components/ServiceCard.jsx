@@ -5,17 +5,17 @@ import { ArrowRight } from "lucide-react"
 export default function ServiceCard({ title, image, path }) {
   return (
     <Link to={path} className="group block">
-      <Card className="overflow-hidden border bg-white transition-all duration-300 hover:shadow-md">
+      <Card className="overflow-hidden border bg-white transition-all duration-300 hover:shadow-lg">
 
-        {/* IMAGE — faster scale + subtle brightness lift */}
+        {/* IMAGE — zoom-out effect: starts slightly zoomed in, zooms to normal on hover */}
         <div className="overflow-hidden relative">
           <img
             src={image}
             alt={title}
-            className="w-full h-56 object-cover transition-all duration-300 ease-out group-hover:scale-105 group-hover:brightness-105"
+            className="w-full h-56 object-cover transition-transform duration-500 ease-out scale-110 group-hover:scale-100"
           />
-          {/* Soft overlay that fades in on hover — adds depth without changing layout */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Gradient overlay fades in on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
         </div>
 
         {/* CONTENT */}

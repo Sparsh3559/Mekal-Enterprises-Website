@@ -6,8 +6,10 @@ import {
   Tag, Image, LogOut, Menu, X, MessageSquare,
 } from "lucide-react"
 
-const DARK  = "#065999"
-const BRAND = "#5fc7f4"
+// Match navbar background exactly
+const SIDEBAR_BG = "#5fc7f4"
+const DARK       = "#065999"
+const NAVY       = "#0a3d62"
 
 const navItems = [
   { to: "/admin",             label: "Dashboard",       icon: LayoutDashboard },
@@ -33,13 +35,13 @@ export default function AdminLayout({ children }) {
   )?.label || "Admin"
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full" style={{ backgroundColor: DARK }}>
+    <div className="flex flex-col h-full" style={{ backgroundColor: SIDEBAR_BG }}>
 
       {/* Logo */}
-      <div className="px-5 py-5 border-b" style={{ borderColor: "rgba(95,199,244,0.2)" }}>
+      <div className="px-5 py-5 border-b" style={{ borderColor: `${DARK}30` }}>
         <img src="/mekal_logo.png" alt="Mekal" className="h-14 w-auto object-contain mb-2"
           onError={e => { e.target.style.display = "none" }} />
-        <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: BRAND }}>
+        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: NAVY }}>
           Admin Panel
         </p>
       </div>
@@ -49,23 +51,44 @@ export default function AdminLayout({ children }) {
         {navItems.map(({ to, label, icon: Icon }) => {
           const active = to === "/admin" ? pathname === "/admin" : pathname.startsWith(to)
           return (
-            <Link key={to} to={to} onClick={() => setSideOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                active ? "text-white" : "text-white/60 hover:text-white hover:bg-white/10"
-              }`}
-              style={active ? { backgroundColor: "rgba(95,199,244,0.25)" } : {}}>
-              <Icon size={17} className={active ? "text-white" : "text-white/50"} />
+            <Link
+              key={to} to={to} onClick={() => setSideOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150"
+              style={{
+                color:           active ? "#fff" : NAVY,
+                backgroundColor: active ? `${DARK}cc` : "transparent",
+              }}
+              onMouseEnter={e => {
+                if (!active) {
+                  e.currentTarget.style.backgroundColor = `${DARK}20`
+                  e.currentTarget.style.color = NAVY
+                }
+              }}
+              onMouseLeave={e => {
+                if (!active) {
+                  e.currentTarget.style.backgroundColor = "transparent"
+                  e.currentTarget.style.color = NAVY
+                }
+              }}>
+              <Icon
+                size={17}
+                style={{ color: active ? "#fff" : DARK, flexShrink: 0 }}
+              />
               {label}
             </Link>
           )
         })}
       </nav>
 
-      {/* User + Logout */}
-      <div className="px-3 py-4 border-t" style={{ borderColor: "rgba(95,199,244,0.2)" }}>
-        <button onClick={signOut}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-all">
-          <LogOut size={16} className="text-white/50" />
+      {/* Sign out */}
+      <div className="px-3 py-4 border-t" style={{ borderColor: `${DARK}30` }}>
+        <button
+          onClick={signOut}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150"
+          style={{ color: NAVY, backgroundColor: "transparent" }}
+          onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${DARK}20` }}
+          onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent" }}>
+          <LogOut size={16} style={{ color: DARK }} />
           Sign Out
         </button>
       </div>

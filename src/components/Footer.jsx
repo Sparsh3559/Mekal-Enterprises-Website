@@ -120,12 +120,13 @@ export default function Footer() {
               left: "50%",
               top: "50%",
               transform: "translate(-50%, -50%)",
-              width: "180px",
-              height: "140px",
+              width: "220px",
+              height: "160px",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
-              borderRadius: "999px",
               pointerEvents: "none",
+              maskImage: "radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%)",
+              WebkitMaskImage: "radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%)",
             }} />
           </div>
 

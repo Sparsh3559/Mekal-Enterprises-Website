@@ -107,7 +107,9 @@ export default function FeedbackPage() {
             </div>
             <h2 className="text-xl font-bold mb-2" style={{ color: DARK }}>Thank You!</h2>
             <p className="text-zinc-500 text-sm leading-relaxed">
-              Your feedback has been submitted and is pending review. Once approved it will appear in our testimonials section.
+            Your feedback has been successfully submitted and noted. We appreciate your input and value the time you took to share it with us.
+
+            Our team will review it, and we will reach out if any further information is required.
             </p>
           </div>
         ) : (

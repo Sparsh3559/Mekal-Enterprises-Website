@@ -116,46 +116,49 @@ export default function Footer() {
           </svg>
         </div>
 
-        {/* ── Full-width wave banner: two images side by side, no gap, logo centred above ── */}
-        <div className="relative w-full border-b border-white/20 pb-6">
+        {/* ── Full-width wave banner + logo emerging from it ── */}
+        <div className="relative w-full border-b border-white/20">
 
-          {/* Two wave images joined full-width — zero gap */}
-          <div className="flex w-full" style={{ height: "clamp(80px, 16vw, 130px)" }}>
-            <img
-              src={WAVE_URL}
-              alt=""
-              className="flex-1 object-fill"
-              style={{ minWidth: 0 }}
-            />
-            <img
-              src={WAVE_URL}
-              alt=""
-              className="flex-1 object-fill"
-              style={{ minWidth: 0, transform: "scaleX(-1)" }}
-            />
+          {/* Two wave images joined full-width — zero gap, taller */}
+          <div className="flex w-full" style={{ height: "clamp(100px, 20vw, 160px)" }}>
+            <img src={WAVE_URL} alt="" className="flex-1 object-fill" style={{ minWidth: 0 }} />
+            <img src={WAVE_URL} alt="" className="flex-1 object-fill" style={{ minWidth: 0, transform: "scaleX(-1)" }} />
           </div>
 
-          {/* Logo centred — sits on top of the wave images */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
+          {/* Logo — centred ON the wave, half-protruding upward */}
+          <div className="absolute left-1/2 -translate-x-1/2" style={{ top: "50%", transform: "translate(-50%, -52%)" }}>
+            {/* Soft radial glow behind logo so it looks like it's emerging */}
+            <div style={{
+              position:        "absolute",
+              inset:           "-24px",
+              borderRadius:    "50%",
+              background:      "radial-gradient(circle, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.18) 55%, transparent 75%)",
+              filter:          "blur(6px)",
+              zIndex:          0,
+            }} />
             <img
               src="/mekal_logo.png"
               alt="Mekal Enterprises"
-              className="object-contain drop-shadow-lg"
-              style={{ height: "clamp(52px, 10vw, 90px)", width: "auto" }}
+              className="object-contain relative z-10"
+              style={{
+                height:    "clamp(90px, 16vw, 148px)",
+                width:     "auto",
+                filter:    "drop-shadow(0 4px 18px rgba(6,89,153,0.35))",
+              }}
             />
+          </div>
+
+          {/* "Mekal Enterprises" text — below the wave, not overlapping logo */}
+          <div className="text-center pt-6 pb-5 px-4">
             <span
-              className="font-bold tracking-widest uppercase"
+              className="font-extrabold tracking-widest uppercase block mb-5"
               style={{
                 color:         "#0a2a5e",
-                fontSize:      "clamp(9px, 1.4vw, 13px)",
-                letterSpacing: "0.22em",
+                fontSize:      "clamp(11px, 1.6vw, 16px)",
+                letterSpacing: "0.28em",
               }}>
               Mekal Enterprises
             </span>
-          </div>
-
-          {/* Contact info */}
-          <div className="text-center px-4 mt-4">
             <p className="text-sm md:text-base font-medium max-w-2xl mx-auto mb-4 leading-relaxed" style={{ color: "#0a2a5e" }}>
               We are the best Gifting Solutions Company in India.&nbsp;
               We have a wide range of products for any budget provided to us.

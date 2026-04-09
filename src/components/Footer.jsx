@@ -93,15 +93,6 @@ export default function Footer() {
     { label: "Working with Mekal", to: "/working-with-mekal" },
   ]
 
-  const socials = [
-    { icon: <Instagram size={16} />, href: "https://www.instagram.com/mekal.in?igsh=bDVvdXNiaW02Nzlh", label: "Instagram" },
-    { icon: <Facebook size={16} />, href: "https://www.facebook.com/p/Mekal-Enterprises-100067034525784/", label: "Facebook" },
-    { icon: <Youtube size={16} />, href: "https://www.youtube.com/@MekalEnterprises", label: "YouTube" },
-    { icon: <Linkedin size={16} />, href: "https://www.linkedin.com/company/mekal-enterprises/", label: "LinkedIn" },
-    { icon: <span className="text-[9px] font-bold leading-none">IM</span>, href: "https://www.indiamart.com/mekal-enterprises/photos.html", label: "IndiaMart" },
-    { icon: <span className="text-[9px] font-bold leading-none">JD</span>, href: "https://www.justdial.com/Dewas/Mekal-Enterprises-Mekal-Enteerprises-Mishrilal-Nagar/9999P7272-7272-230421193507-M5G2_BZDET", label: "JustDial" },
-  ]
-
   return (
     <>
       <ScrollToTop />
@@ -111,66 +102,63 @@ export default function Footer() {
 
         <div className="w-full overflow-hidden leading-none -mt-1">
           <svg viewBox="0 0 1440 60" preserveAspectRatio="none"
-            className="w-full h-10 md:h-16" xmlns="http://www.w3.org/2000/svg">
+            className="w-full h-10 md:h-16">
             <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,0 L0,0 Z" fill="white" />
           </svg>
         </div>
 
-        {/* ── UPDATED WAVE + LOGO SECTION ── */}
+        {/* UPDATED WAVE + LOGO */}
         <div className="relative w-full border-b border-white/20">
 
           <div className="relative flex w-full" style={{ height: "clamp(100px, 20vw, 160px)" }}>
-            <img src={WAVE_URL} alt="" className="flex-1 object-fill" style={{ minWidth: 0 }} />
-            <img src={WAVE_URL} alt="" className="flex-1 object-fill" style={{ minWidth: 0, transform: "scaleX(-1)" }} />
+            <img src={WAVE_URL} className="flex-1 object-fill" />
+            <img src={WAVE_URL} className="flex-1 object-fill" style={{ transform: "scaleX(-1)" }} />
 
-            {/* subtle center blend */}
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: 0,
-                transform: "translateX(-50%)",
-                width: "120px",
-                height: "100%",
-                background: "linear-gradient(to right, rgba(0,0,0,0.12), transparent 40%, transparent 60%, rgba(0,0,0,0.12))",
-                pointerEvents: "none",
-              }}
-            />
-          </div>
-
-          {/* logo higher, no fade */}
-          <div
-            style={{
+            {/* subtle blur behind logo */}
+            <div style={{
               position: "absolute",
               left: "50%",
-              top: "32%",
+              top: "50%",
               transform: "translate(-50%, -50%)",
-              zIndex: 20,
-            }}
-          >
+              width: "180px",
+              height: "140px",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              borderRadius: "999px",
+              pointerEvents: "none",
+            }} />
+          </div>
+
+          {/* logo */}
+          <div style={{
+            position: "absolute",
+            left: "50%",
+            top: "28%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 20,
+          }}>
             <img
               src="/mekal_logo.png"
               alt="Mekal Enterprises"
               style={{
-                height: "clamp(100px, 18vw, 160px)",
-                width: "auto",
+                height: "clamp(120px, 20vw, 180px)",
                 objectFit: "contain",
               }}
             />
           </div>
 
+          {/* text */}
           <div className="text-center pt-6 pb-5 px-4">
             <p className="text-sm md:text-base font-medium max-w-2xl mx-auto mb-4 leading-relaxed" style={{ color: "#0a2a5e" }}>
-              We are the best Gifting Solutions Company in India.&nbsp;
-              We have a wide range of products for any budget provided to us.
+              We are the best Gifting Solutions Company in India. We have a wide range of products for any budget provided to us.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm" style={{ color: "#0a2a5e" }}>
-              <a href="tel:+919131387559" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+              <a href="tel:+919131387559" className="flex items-center gap-2">
                 <Phone size={14} />
                 +91 9131387559
               </a>
               <span className="hidden sm:block opacity-30">•</span>
-              <a href="mailto:mekal.enterprises@gmail.com" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+              <a href="mailto:mekal.enterprises@gmail.com" className="flex items-center gap-2">
                 <Mail size={14} />
                 mekal.enterprises@gmail.com
               </a>
@@ -178,47 +166,31 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* rest untouched */}
+        {/* rest same */}
         <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
-
             <div>
               <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest" style={{ color: "#0a2a5e" }}>All Products</h4>
               <ul className="space-y-2.5 text-sm" style={{ color: "#0a2a5e" }}>
-                {allProducts.map(item => (
-                  <li key={item.label}>
-                    <Link to={item.to} className="hover:opacity-60">{item.label}</Link>
-                  </li>
-                ))}
+                {allProducts.map(item => <li key={item.label}><Link to={item.to}>{item.label}</Link></li>)}
               </ul>
             </div>
-
             <div>
               <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest" style={{ color: "#0a2a5e" }}>Customer Support</h4>
               <ul className="space-y-2.5 text-sm" style={{ color: "#0a2a5e" }}>
-                {customerSupport.map(item => (
-                  <li key={item.label}>
-                    <Link to={item.to} className="hover:opacity-60">{item.label}</Link>
-                  </li>
-                ))}
+                {customerSupport.map(item => <li key={item.label}><Link to={item.to}>{item.label}</Link></li>)}
               </ul>
             </div>
-
             <div>
               <h4 className="font-semibold mb-5 text-xs uppercase tracking-widest" style={{ color: "#0a2a5e" }}>Company Info</h4>
               <ul className="space-y-2.5 text-sm mb-8" style={{ color: "#0a2a5e" }}>
-                {companyInfo.map(item => (
-                  <li key={item.label}>
-                    <Link to={item.to} className="hover:opacity-60">{item.label}</Link>
-                  </li>
-                ))}
+                {companyInfo.map(item => <li key={item.label}><Link to={item.to}>{item.label}</Link></li>)}
               </ul>
             </div>
-
           </div>
         </div>
 
-        <div className="border-t border-white/20 text-center text-xs py-4 px-4" style={{ color: "#0a2a5e", opacity: 0.7 }}>
+        <div className="border-t border-white/20 text-center text-xs py-4" style={{ color: "#0a2a5e", opacity: 0.7 }}>
           © {new Date().getFullYear()} Mekal Enterprises. All rights reserved.
         </div>
 
